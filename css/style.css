@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700&display=swap');
+
+:root {
+  --skule-green: #5da7a7;
+  --darker-skule-green: #439898;
+  --white: #f5f5f5;
+}
+
+body {
+  font-family: "Raleway", sans-serif;
+  background-color: var(--white);
+}
+
+/* ------------------------------- COLORS -----------------------------------*/
+.spicy-green {
+  background-color: var(--skule-green);
+}
+
+.spicy-green-text {
+  color: var(--skule-green) !important;
+}
+
+.skule-green {
+  background-color: var(--darker-skule-green);
+}
+
+.skule-green-text {
+  color: var(--darker-skule-green) !important;
+}
+
+/*----------------------------------------------------------------------------*/
+.wrapper {
+  padding-left: 300px;
+}
+
+.filter {
+  padding: 40px;
+}
+
+.no-shadows {
+  box-shadow: none!important;
+}
+
+nav, .side-nav, .page-footer, .footer-copyright {
+  background-color: var(--skule-green);
+}
+
+.side-nav li {
+  color: white;
+}
+
+nav {
+  height: 45px;
+  padding: 0 10px 0 10px;
+}
+
+nav .right {
+  line-height: 45px;
+}
+
+
+.nav-wrapper {
+  height: 40px !important;
+}
+
+.container2 {
+  padding: 0 1em;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+.btn1 {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+nav ul a {
+  color: #fff;
+}
+
+@media only screen and (max-width : 992px) {
+  .wrapper {
+    padding-left: 0;
+  }
+
+  nav ul a {
+    color: #000;
+  }
+}
+
+/* Login Form */
+.box {
+  margin: auto;
+  padding-top: 1em;
+  width: 50%;
+}
+
+@media(max-width: 480px) {
+  .box {
+    width: 100%;
+  }
+}
+
+/*----------------------------------IMAGES------------------------------------*/
+/* Skule Lockers Logo */
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-img-lockers {
+  margin-left: -8px;
+  height: 40px;
+  width: auto;
+}
+
+.footer-img {
+  height: 120px;
+  width: auto;
+}
+
+.logo-text {
+  height: 64px;
+  width: auto;
+  padding: 5px;
+}
+
+@media(max-width:480px) {
+  .logo-img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.icon {
+  font-size: 3.5em;
+  text-align: center;
+}
+
+#filter {
+  padding: 10px;
+}
+
+.checkbox-grey[type="checkbox"].filled-in:checked + span:not(.lever):after {
+  /* border: 2px solid #ff9800; */
+  background-color:grey;
+}
+
+.collapsible, .card {
+  box-shadow: none !important;
+}
+
+.collapsible, .card, .card-action, .collection {
+  border: none !important;
+}
