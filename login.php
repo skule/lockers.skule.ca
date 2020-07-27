@@ -104,7 +104,7 @@ body {
                   <p class="center-align">
                     New user? <a href="register.php">Register</a><br>
                     Admin? <a href="admin/">Login</a><br><br>
-                    Forgot your password? <br><a href="mailto:president.skule.ca">
+                    Forgot your password? <br><a href="mailto:president@skule.ca">
                       Contact president@skule.ca</a><br><br>
                     <button type="submit" class="waves-effect waves-light btn blue" name="submit">Login</button>
                   </p>
