@@ -1,7 +1,7 @@
 <?php
   session_start();
-  include 'navbar.php';
   require 'session.php';
+  include 'navbar.php';
 
 ?>
 <div class="wrapper">
