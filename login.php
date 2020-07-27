@@ -37,12 +37,14 @@
           $msgClass = "red";
         } elseif ($pwdCheck == true) {
           $_SESSION['s_id'] = $row['student_id'];
-          $_SESSION['s_username'] = $row['student_username'];
           $_SESSION['s_name'] = $row['student_name'];
           $_SESSION['s_email'] = $row['student_email'];
-          $_SESSION['s_phone'] = $row['student_phone'];
 
-          header("location: index.php");
+          //After logging in, if a return-to address was set, return there
+          if(isset($_GET['return-to']))
+            header("Location: /".urlencode($_GET['return-to']));
+          else
+            header("Location: /");
         }
       }
     } else {
@@ -87,7 +89,7 @@ body {
           <div class="card-content" style="padding: 40px;">
             <span class="card-title center-align">User Login</span>
             <div class="row">
-              <form class="col s12" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" novalidate>
+              <form class="col s12" method="POST" action="#" novalidate>
                 <div class="row">
                   <div class="input-field">
                     <input type="text" id="userid" name="userid">

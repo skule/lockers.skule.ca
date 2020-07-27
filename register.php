@@ -39,10 +39,18 @@
             `student_name`, `student_email`, `student_department`, `student_phone`)
             VALUES ('$id', '$hashedPwd', '$name', '$email', '$department', '$student_phone')";
 
-        // TODO: User friendly error messages 
+        // TODO: User friendly error messages
         if (mysqli_query($conn, $sql)){
-          $msg = "Register Successful <a href='login.php' class='white-text'>Login</a>";
-          $msgClass = "green";
+          //Register was successful, log user in
+          $_SESSION['s_id'] = $id;
+          $_SESSION['s_name'] = $name;
+          $_SESSION['s_email'] = $email;
+
+          //After logging in, if a return-to address was set, return there
+          if(isset($_GET['return-to']))
+            header("Location: /".urlencode($_GET['return-to']));
+          else
+            header("Location: /");
         } else {
           $msg = "Register error: " . $sql . "<br>" . mysqli_error($conn);
           $msgClass = "red";
@@ -78,8 +86,8 @@ body {
           <div class="card-content" style="padding: 40px;">
             <span class="card-title center-align">User Registration</span>
             <div class="row">
-              <form class="col s12" method="POST" 
-                action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
+              <form class="col s12" method="POST"
+                action="#"
                 novalidate>
 
                 <!-- Student Number -->
