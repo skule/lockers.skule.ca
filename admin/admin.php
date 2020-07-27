@@ -98,7 +98,7 @@
               <td>
                 <form method='POST' action='admin.php'>
                   <input type='hidden' name='id' value="<?php echo $row['admin_username'];?>">
-                  <button type='submit' onclick='return confirm(`Are you sure you want to delete <?php echo $row['admin_username']; ?>?`);' name='delete' class='btn1 red-text tooltipped' data-position='top' data-tooltip='Delete'>
+                  <button type='submit' onclick='return confirm(`Are you sure you want to delete the admin "<?php echo $row['admin_username']; ?>"?`);' name='delete' class='btn1 red-text tooltipped' data-position='top' data-tooltip='Delete'>
                     <i class='far fa-trash-alt'></i>
                   </button>
                 </form>
