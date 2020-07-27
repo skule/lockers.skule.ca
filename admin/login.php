@@ -102,14 +102,12 @@ body {
                 <form class="col s12" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" novalidate>
                   <div class="row">
                     <div class="input-field">
-                      <input type="text" id="username" name="username">
-                      <label for="username">Username</label>
+                      <input type="text" id="username" placeholder="Username" name="username">
                     </div>
                   </div>
                   <div class="row">
                     <div class="input-field">
-                      <input type="password" id="password" name="password">
-                      <label for="userid">Password</label>
+                      <input type="password" id="password" placeholder="Password" name="password">
                     </div>
                   </div>
                   <div class="center">
@@ -141,5 +139,5 @@ body {
   </div>
   <div class="footer-copyright">
     <!-- TODO: Add copyright -->
-  </div> 
+  </div>
 </footer>
