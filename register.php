@@ -16,10 +16,12 @@
     $id = mysqli_real_escape_string($conn, $_POST['id']);
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $department = mysqli_real_escape_string($conn, $_POST['department']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Check required fields
-    if (empty($id) || empty($name) || empty($email) || empty($password)){
+    if (empty($id) || empty($name) || empty($email) || empty($department) || empty($password) || empty($phone)){
       $msg = "Please fill in all fields";
       $msgClass = "red";
     } else {
@@ -33,9 +35,9 @@
         $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         // Insert user into database
-        $sql = "INSERT INTO `student` (`student_id`, `student_pwd`, 
-            `student_name`, `student_email`)
-            VALUES ('$id', '$hashedPwd', '$name', '$email')";
+        $sql = "INSERT INTO `student` (`student_id`, `student_pwd`,
+            `student_name`, `student_email`, `student_department`, `student_phone`)
+            VALUES ('$id', '$hashedPwd', '$name', '$email', '$department', '$student_phone')";
 
         // TODO: User friendly error messages 
         if (mysqli_query($conn, $sql)){
@@ -104,6 +106,32 @@ body {
                     <input type="email" id="email" name="email"
                       value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                     <label for="email">Student Email</label>
+                  </div>
+                </div>
+
+                <!-- Department -->
+                <div class="row">
+                  <div class="input-field">
+                    <select id="department" name="department">
+                      <option disabled selected></option>
+                      <?php
+                        $departments = array("Chem", "Civ", "ECE", "EngSci", "Indy", "Mech", "Min", "MSE", "T1");
+                        foreach ($departments as $department) {
+                          //If a department was selected, keep it selected
+                          echo("<option value=$department".(isset($_POST['department']) && $_POST['department'] == $department ? " selected" : "")." > $department </option>");
+                        }
+                      ?>
+                    </select>
+                    <label for="department">Department</label>
+                  </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="row">
+                  <div class="input-field">
+                    <input type="tel" id="phone" name="phone"
+                      value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
+                    <label for="phone">Student Phone Number</label>
                   </div>
                 </div>
 
