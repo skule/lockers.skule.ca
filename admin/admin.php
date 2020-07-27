@@ -10,17 +10,15 @@
   // Form handling
   if (filter_has_var(INPUT_POST, 'submit')) {
     // Get form data
-    $id = mysqli_real_escape_string($conn, $_POST['username']); // delete this column
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $phone = mysqli_real_escape_string($conn, $_POST['username']); // delete this column
     $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // Check if the input is empty
     if (!empty($id) && !empty($username) && !empty($email) && !empty($phone)) {
       // pass
-      $sql = "INSERT INTO `admin` (`admin_id`, `admin_username`, `admin_email`, `admin_phone`, `admin_password`)
-      VALUES ('$id', '$username', '$email', '$phone', '$hashedPwd')";
+      $sql = "INSERT INTO `admin` (`admin_username`, `admin_email`, `admin_password`)
+      VALUES (`$username`, `$email`, `$hashedPwd`)";
 
       if (mysqli_query($conn, $sql)) {
         // Success
@@ -40,7 +38,7 @@
   // Delete form handling
   if (isset($_POST['delete'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $sql = "DELETE FROM `admin` WHERE `admin_id`='$id'";
+    $sql = "DELETE FROM `admin` WHERE `admin_username`='$id'";
 
     if (mysqli_query($conn, $sql)) {
       $msg = "Delete Successfull";
@@ -95,12 +93,12 @@
               <td><?php echo $row['admin_username']; ?></td>
               <td><?php echo $row['admin_email']; ?></td>
               <td>
-                <a href='admin_edit.php?id=<?php echo $row['admin_id']; ?>' class='btn1 blue-text tooltipped' data-position='right' data-tooltip='Edit'><i class='fas fa-pencil-alt'></i></a>
+                <a href='admin_edit.php?id=<?php echo $row['admin_username']; ?>' class='btn1 blue-text tooltipped' data-position='right' data-tooltip='Edit'><i class='fas fa-pencil-alt'></i></a>
               </td>
               <td>
                 <form method='POST' action='admin.php'>
-                  <input type='hidden' name='id' value="<?php echo $row['admin_id'];?>">
-                  <button type='submit' onclick='return confirm(`Delete this admin <?php echo $row['admin_id']; ?>?`);' name='delete' class='btn1 red-text tooltipped' data-position='top' data-tooltip='Delete'>
+                  <input type='hidden' name='id' value="<?php echo $row['admin_username'];?>">
+                  <button type='submit' onclick='return confirm(`Are you sure you want to delete <?php echo $row['admin_username']; ?>?`);' name='delete' class='btn1 red-text tooltipped' data-position='top' data-tooltip='Delete'>
                     <i class='far fa-trash-alt'></i>
                   </button>
                 </form>

@@ -10,7 +10,7 @@
   // Get request base on admin id
   if (isset($_REQUEST['id'])) {
     $id = mysqli_real_escape_string($conn, $_REQUEST['id']);
-    $sql = "SELECT * FROM `admin` WHERE `admin_id`='$id'";
+    $sql = "SELECT * FROM `admin` WHERE `admin_username`='$id'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
   }
