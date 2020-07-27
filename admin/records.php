@@ -45,7 +45,7 @@
           <span class="white-text"><?php echo $msg; ?></span>
         </div>
       <?php endif ?>
-      <h5>Records Records</h5>
+      <h5>Rental Records</h5>
       <div class="divider"></div>
       <br>
 
