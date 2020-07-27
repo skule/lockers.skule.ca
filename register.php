@@ -83,8 +83,8 @@ body {
                 <!-- Student Number -->
                 <div class="row">
                   <div class="input-field">
-                    <input type="text" id="id" name="id" 
-                      value="<?php echo isset($_POST['id']) ? $id : ''; ?>">
+                    <input type="text" id="id" name="id"
+                      value="<?php echo isset($_POST['id']) ? htmlspecialchars($_POST['id']) : ''; ?>">
                     <label for="id">Student Number</label>
                   </div>
                 </div>
@@ -92,8 +92,8 @@ body {
                 <!-- Name -->
                 <div class="row">
                   <div class="input-field">
-                    <input type="text" id="name" name="name" 
-                      value="<?php echo isset($_POST['name']) ? $name : ''; ?>">
+                    <input type="text" id="name" name="name"
+                      value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
                     <label for="name">Student Full Name</label>
                   </div>
                 </div>
@@ -102,7 +102,7 @@ body {
                 <div class="row">
                   <div class="input-field">
                     <input type="email" id="email" name="email"
-                      value="<?php echo isset($_POST['email']) ? $email : ''; ?>">
+                      value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                     <label for="email">Student Email</label>
                   </div>
                 </div>
