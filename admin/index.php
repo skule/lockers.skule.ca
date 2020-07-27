@@ -293,7 +293,7 @@
               $row = mysqli_fetch_array($result);
               echo "<li class='collection-item'>Total paid locker: <span class='secondary-content green-text'>RM".$row['price']."</span></li>";
             ?>
-          </ul> 
+          </ul>
         </div> -->
       </div>
     </div>

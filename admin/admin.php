@@ -139,7 +139,7 @@
             </div>
             <!-- <div class="row">
               <div class="input-field">
-                <i class="material-icons prefix">local_phone</i> 
+                <i class="material-icons prefix">local_phone</i>
                 <input type="text" id="phone" name="phone">
                 <label for="phone">Phone</label>
               </div>

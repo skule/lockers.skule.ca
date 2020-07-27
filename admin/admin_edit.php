@@ -30,11 +30,11 @@
         // Hashing the password
         $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
         // Update database
-        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username', 
+        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username',
           admin_email='$email', admin_password='$hashedPwd' WHERE admin_id='$username'";
       } else {
         // Update database
-        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username', 
+        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username',
           admin_email='$email' WHERE admin_id='$username'";
       }
 
@@ -64,7 +64,7 @@
           <span class="white-text"><?php echo $msg; ?></span>
         </div>
       <?php endif ?>
-      <h5><i class="fas fa-edit"></i> 
+      <h5><i class="fas fa-edit"></i>
         Edit user <span class="blue-text"><?php echo $row['admin_username']; ?></span>
       </h5>
       <div class="divider"></div><br><br>

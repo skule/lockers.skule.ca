@@ -32,10 +32,10 @@
       if(!empty($password)) {
         // Hashing the password
         $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $sql = "UPDATE `student` SET student_id='$id', student_pwd='$hashedPwd', 
+        $sql = "UPDATE `student` SET student_id='$id', student_pwd='$hashedPwd',
           student_name='$name', student_email='$email', WHERE student_id='$id'";
       } else {
-        $sql = "UPDATE `student` SET student_id='$id', student_name='$name', 
+        $sql = "UPDATE `student` SET student_id='$id', student_name='$name',
           student_email='$email', WHERE student_id='$id'";
       }
 
