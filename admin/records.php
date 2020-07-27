@@ -1,6 +1,7 @@
 <?php
   session_start();
   require 'session.php';
+  $title = "Skule™ Lockers Admin | Rental Records";
   include 'navbar.php';
   require '../model/db.php';
 
