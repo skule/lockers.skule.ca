@@ -29,7 +29,7 @@
         $msg = "Invalid user Id or password";
         $msgClass = "red";
       } else {
-        // dehashing the password
+        // verify password hash
         $pwdCheck = password_verify($_POST['password'], $row['student_pwd']);
 
         if($pwdCheck == false) {
@@ -57,7 +57,7 @@
 ?>
 
 <style>
-// Finally sticky footer! Good god have mercy
+/* Finally sticky footer! Good god have mercy */
 body {
   display: flex;
   min-height: 100vh;
