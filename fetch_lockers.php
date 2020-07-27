@@ -3,12 +3,11 @@
   session_start();
   require 'model/db.php';
 
-  $result = mysqli_query($conn, 
-    "SELECT * FROM `locker` 
-      WHERE `locker_size` = '" .$_POST['size']. "'
-      AND `locker_location` = '" .$_POST['location']. "'
-      AND `locker_status`='Available'
-  ");
+  $sql = "SELECT * FROM `locker`
+    WHERE `locker_size` = '" .mysqli_real_escape_string($conn,$_POST['size']). "'
+    AND `locker_location` = '" .mysqli_real_escape_string($conn,$_POST['location']). "'";
+
+  $result = mysqli_query($conn, $sql);
 
   $output = 'option value="">Select Locker</option>';
 
