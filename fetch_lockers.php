@@ -4,8 +4,8 @@
   require 'model/db.php';
 
   $sql = "SELECT * FROM `locker`
-    WHERE `locker_size` = '" .mysqli_real_escape_string($conn,$_POST['size']). "'
-    AND `locker_location` = '" .mysqli_real_escape_string($conn,$_POST['location']). "'";
+    WHERE `locker_size` = '" .mysqli_real_escape_string($conn,$_GET['size']). "'
+    AND `locker_location` = '" .mysqli_real_escape_string($conn,$_GET['location']). "'";
 
   $result = mysqli_query($conn, $sql);
 

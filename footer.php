@@ -14,7 +14,7 @@
     </div>
     <div class="footer-copyright">
       <!-- TODO: Add copyright -->
-    </div> 
+    </div>
   </footer>
 
 <script src="js/jquery-3.2.1.min.js"></script>
@@ -71,7 +71,7 @@
 
     $.ajax({
       url: "fetch_lockers.php",
-      method: "POST",
+      method: "GET",
       data:{location:location,size:size},
       dataType: "text",
       success:function(data) {
@@ -79,7 +79,7 @@
         console.log(data);
         $(this).parent().next().find('.locker').html(data);
       }
-    }) 
+    })
   });
 
   });
