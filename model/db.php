@@ -1,7 +1,7 @@
-<?php 
+<?php
   $serverName = "localhost";
   $userName = "root";
-  $password = "";
+  $password = "root";
   $database = "lockers_lockers";
 
   // Create connection
