@@ -38,7 +38,7 @@
           <li><a class="white-text" href="users.php">&nbsp  Users</a></li>
           <li><a class="white-text" href="admin.php">&nbsp  Admins</a></li>
 
-          <?php if (isset($_SESSION['admin_id'])): ?>
+          <?php if (isset($_SESSION['admin_uname'])): ?>
             <li><a class="white-text" href="logout.php">&nbsp Logout</a></li>
           <?php else: ?>
             <li><a href="login.php">&nbsp Login</a></li>
@@ -71,7 +71,7 @@
     <li><a class="white-text" href="users.php">&nbsp  Users</a></li>
     <li><a class="white-text" href="admin.php">&nbsp  Admins</a></li>
 
-    <?php if (isset($_SESSION['admin_id'])): ?>
+    <?php if (isset($_SESSION['admin_uname'])): ?>
       <li><a class="white-text" href="logout.php">&nbsp Logout</a></li>
     <?php else: ?>
       <li><a href="login.php">&nbsp Login</a></li>
