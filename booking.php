@@ -1,11 +1,8 @@
 <?php
+
+  session_start();
   include 'navbar.php';
   require_once 'model/db.php';
-
-  // If user already logged in, redirect them to index page
-  if (isset($_SESSION['s_id'])) {
-    header("Location: index.php");
-  }
 
   $msg = $msgClass = '';
   function get_price($date1, $date2) {
