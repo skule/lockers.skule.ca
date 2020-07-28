@@ -42,7 +42,7 @@
 
           //After logging in, if a return-to address was set, return there
           if(isset($_GET['return-to']))
-            header("Location: /".urlencode($_GET['return-to']));
+            header("Location: /".$_GET['return-to']);
           else
             header("Location: /");
         }
@@ -104,7 +104,10 @@ body {
                 </div>
                 <div class="row">
                   <p class="center-align">
-                    New user? <a href="register.php">Register</a><br>
+                    New user? <a href="register.php<?php
+                      if(isset($_GET['return-to']))
+                        echo("?return-to=".$_GET['return-to']);
+                      ?>">Register</a><br>
                     Admin? <a href="admin/">Login</a><br><br>
                     Forgot your password? <br><a href="mailto:president@skule.ca">
                       Contact president@skule.ca</a><br><br>

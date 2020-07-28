@@ -48,7 +48,7 @@
 
           //After logging in, if a return-to address was set, return there
           if(isset($_GET['return-to']))
-            header("Location: /".urlencode($_GET['return-to']));
+            header("Location: /".$_GET['return-to']);
           else
             header("Location: /");
         } else {
@@ -154,7 +154,10 @@ body {
                 <!-- Submit -->
                 <div class="row">
                   <p class="center-align">
-                    Already registered? <a href="login.php">Login</a><br><br>
+                    Already registered? <a href="login.php<?php
+                      if(isset($_GET['return-to']))
+                        echo("?return-to=".$_GET['return-to']);
+                      ?>">Login</a><br><br>
                     <button type="submit" class="waves-effect waves-light btn blue" name="submit">
                       Register
                     </button>
