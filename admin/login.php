@@ -22,7 +22,7 @@
         $msg = "Invalid Admin id or password";
         $msgClass = "red";
       } else {
-        // dehashing the password
+        // Checking the password hash
         $pwdCheck = password_verify($_POST['password'], $row['admin_password']);
 
         if($pwdCheck == false) {
