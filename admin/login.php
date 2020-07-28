@@ -29,7 +29,6 @@
           $msg = "Invalid password";
           $msgClass = "red";
         } elseif ($pwdCheck == true) {
-          $_SESSION['admin_id'] = $row['admin_id'];
           $_SESSION['admin_uname'] = $row['admin_username'];
           $_SESSION['admin_email'] = $row['admin_email'];
           header("location: index.php");
