@@ -5,8 +5,8 @@
 
   $msg = $msgClass = '';
 
-  if (isset($_REQUEST['id'])) {
-    $id = mysqli_real_escape_string($conn, $_REQUEST['id']);
+  if (isset($_SESSION['s_id'])) {
+    $id = $_SESSION['s_id'];
     $sql = "SELECT * FROM `student` WHERE `student_id`='$id'";
     $result = mysqli_query($conn, $sql);
 
@@ -17,13 +17,13 @@
 
   // Check for submit
   if (filter_has_var(INPUT_POST, 'submit')){
-    $id = mysqli_real_escape_string($conn, $_POST['id']);
+    $id = $_SESSION['s_id'];
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Check required fields
-    if (empty($id) || empty($name) || !empty($email)){
+    if (empty($name) || empty($email)){
       $msg = "Please fill in all fields";
       $msgClass = "red";
     } else {
@@ -32,24 +32,28 @@
         $msg = "Please use a valid email";
         $msgClass = "red";
       } else {
-        if(!empty($password)) {
+        if(!empty($password)) { //If the password needs to be changed,
           // Hashing the password
           $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
           // Update databasee
-          $sql = "UPDATE `student` 
-            SET `student_id`='$id', `student_pwd`='$hashedPwd', `student_name`='$name', 
-            `student_email`='$email', WHERE student_id='$id'";
-        } else {
+          $sql = "UPDATE `student`
+            SET `student_pwd`='$hashedPwd', `student_name`='$name',
+            `student_email`='$email' WHERE student_id='$id'";
+        } else { //If the password does not need to be changed
           // Insert user into database
-          $sql = "UPDATE `student` 
-            SET `student_id`='$id', `student_name`='$name', 
-            `student_email`='$email', WHERE student_id='$id'";
+          $sql = "UPDATE `student`
+            SET `student_name`='$name',
+            `student_email`='$email' WHERE student_id='$id'";
         }
 
         if (mysqli_query($conn, $sql)){
           $msg = "Update success";
           $msgClass = "green";
+          //We've updated the database, fetch the new values
+          $sql = "SELECT * FROM `student` WHERE `student_id`='$id'";
+          $result = mysqli_query($conn, $sql);
+          $row = mysqli_fetch_array($result);
         } else {
           $msg = "Update error: " . $sql . "<br>" . mysqli_error($conn);
           $msgClass = "red";
