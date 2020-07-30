@@ -19,9 +19,10 @@
   if (isset($_POST['submit'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
     $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $location = mysqli_real_escape_string($conn, $_POST['location']);
     $price = mysqli_real_escape_string($conn, $_POST['price']);
 
-    $sql = "UPDATE `locker` SET locker_id='$id', locker_status='$status', locker_price='$price' WHERE locker_id='$id'";
+    $sql = "UPDATE `locker` SET locker_id='$id', locker_status='$status', locker_price='$price' locker_location='$location' WHERE locker_id='$id'";
     if (mysqli_query($conn, $sql)) {
       $msg = "<a href='locker.php' class='white-text'><i class='fas fa-arrow-circle-left'></i></a> Update Successfull";
       $msgClass = "green";
@@ -47,7 +48,13 @@
         <div class="row">
           <div class="input-field col s12">
             <input type="text" id="id" name="id" value="<?php echo $row['locker_id']; ?>">
-            <label for="id">Locker ID</label>
+            <label for="id">Locker ID (must be unique)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="location" type="text" name="location" value="<?php echo $row['locker_location']; ?>">
+            <label for="location">Location</label>
           </div>
         </div>
         <div class="row">

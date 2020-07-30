@@ -78,6 +78,7 @@
         <thead class="blue darken-2 white-text">
           <tr class="myHead">
             <th>Locker id</th>
+            <th>Locker Location</th>
             <th>Status</th>
             <th>Price</th>
             <!-- <th>Owner</th> -->
@@ -93,6 +94,7 @@
           ?>
             <tr>
               <td><?php echo $row['locker_id']; ?></td>
+              <td><?php echo $row['locker_location']; ?></td>
               <td><?php echo $row['locker_status']; ?></td>
               <td><?php echo $row['locker_price']; ?></td>
               <td>
