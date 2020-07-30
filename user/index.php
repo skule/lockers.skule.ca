@@ -15,9 +15,10 @@
             <div class="row">
               <div class="col s6 m6 grey-text">
                 <?php
-                  $sql = "SELECT COUNT(record_sub) as sub 
-                    FROM `record` 
-                    WHERE record_sub='active' 
+                  $sql = "SELECT COUNT(record_sub) as sub
+                    FROM `record`
+                    WHERE record_sub='active'
+                      AND record_status='approved'
                       AND student_id='".$_SESSION['s_id']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
@@ -38,10 +39,10 @@
             <div class="row">
               <div class="col s6 m6 grey-text">
                 <?php
-                  $sql = 
-                    "SELECT COUNT(record_status) as status 
-                    FROM `record` 
-                    WHERE record_status='pending'   
+                  $sql =
+                    "SELECT COUNT(record_status) as status
+                    FROM `record`
+                    WHERE record_status='pending'
                       AND student_id='".$_SESSION['s_id']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
@@ -62,9 +63,9 @@
             <div class="row">
               <div class="col s6 m6 grey-text">
                 <?php
-                  $sql = "SELECT COUNT(record_sub) as sub 
-                    FROM `record` 
-                    WHERE record_sub='expired' 
+                  $sql = "SELECT COUNT(record_sub) as sub
+                    FROM `record`
+                    WHERE record_sub='expired'
                       AND student_id='".$_SESSION['s_id']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
@@ -129,11 +130,11 @@
             &nbsp User Profile
           </div>
           <div class="collapsible-body">
-            <p><span class="grey-text">Name:</span> 
+            <p><span class="grey-text">Name:</span>
                 <?php echo $_SESSION['s_name']; ?></p>
-            <p><span class="grey-text">Email:</span> 
+            <p><span class="grey-text">Email:</span>
                 <?php echo $_SESSION['s_email']; ?></p>
-            <a href="user_edit.php?id=<?php echo $_SESSION['s_id']; ?>" 
+            <a href="user_edit.php?id=<?php echo $_SESSION['s_id']; ?>"
                 class="btn1"><i class="fas fa-pencil-alt"></i>&nbsp Edit / Change Password</a>
           </div>
         </li>
