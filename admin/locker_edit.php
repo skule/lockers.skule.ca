@@ -52,13 +52,13 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <select name="status">
+            <select name="status" id='status'>
               <option value="<?php echo $row['locker_status']; ?>" disabled selected><?php echo $row['locker_status']; ?></option>
               <option value="Available">Available</option>
               <option value="Booked">Booked</option>
               <option value="Damaged">Damaged</option>
             </select>
-            <label>Status</label>
+            <label for='status'>Status</label>
           </div>
         </div>
         <div class="row">
