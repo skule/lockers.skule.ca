@@ -16,7 +16,10 @@
       </div>
     </div>
     <div class="footer-copyright">
-      <!-- TODO: Add copyright -->
+      <div style="width: 100%; padding-right: 3%;" class="container right-align">
+        Copyright 2020, University of Toronto Engineering Society<br/>
+        Created by Addis Semagn and Ege Feyzioglu. Webmasters 1T9 - 2T1
+      </div>
     </div>
   </footer>
 
