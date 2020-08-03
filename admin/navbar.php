@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
+  <a class="content-link" href="#screen-reader-content">Skip navigation</a>
   <nav role="navigation" class="z-depth-0">
     <div class="nav-wrapper">
       <!-- Skule Logo -->
@@ -77,3 +77,4 @@
       <li><a href="login.php">&nbsp Login</a></li>
     <?php endif ?>
   </ul>
+  <span id="screen-reader-content"></span>

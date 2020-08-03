@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700&display=swap');
 
+/*Screen reader "skip to content" link*/
+.content-link{
+  display: block;
+  transform: translateY(-100vh);
+  position: absolute;
+  color: black;
+  background-color: white;
+  border: 3pt solid black;
+  font-weight: bold;
+}
+
+.content-link:focus{
+  transform: translateY(0);
+  position: relative;
+  width: 100%;
+  text-align: center;
+  z-index: 1000; /*Fucking materialize...*/
+}
+
 :root {
   --skule-green: #5da7a7;
   --darker-skule-green: #439898;

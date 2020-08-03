@@ -20,6 +20,7 @@ padding-top: 30px;
 }
 </style>
 <body>
+  <a class="content-link" href="#screen-reader-content">Skip navigation</a>
   <nav role="navigation" class="z-depth-0">
     <div class="nav-wrapper">
 
@@ -67,3 +68,4 @@ padding-top: 30px;
 
     </div>
   </nav>
+  <span id="screen-reader-content"></span>
