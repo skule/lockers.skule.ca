@@ -311,17 +311,14 @@
       data: {
         labels: ["Active", "Expired"],
         datasets: [{
-          data: [ <
-            ?
-            php
+          data: [ <?php
             $sql =
             "SELECT SUM(record_sub = 'active') AS active, SUM(record_sub = 'expired') AS expired FROM record";
             $result = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_array($result)) {
               echo $row['active'].
               ",".$row['expired'];
-            } ?
-            >
+            } ?>
           ],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
