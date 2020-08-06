@@ -138,7 +138,7 @@ tr, td {
           $result7 = mysqli_query($conn, "SELECT * FROM `buildings`");
           if($result7):
             while($row7 = mysqli_fetch_array($result7)): ?>
-            <li>
+            <li tabindex="0" role="button" aira-expanded="false" onclick="$(this).attr('aira-expanded', $(this).attr('aira-expanded') == 'true' ? 'false' : 'true')" class="fix-outline">
               <div class="collapsible-header">
                 <ul>
                   <li class="location"><b><?php echo $row7['name']; ?></b></li>
@@ -213,7 +213,7 @@ tr, td {
               <!-- Dynamically fetched based on size, see footer.php -->
               <div class="col l5 m5 s6">
                 <select name="locker" class="locker">
-                  <option value="">Select Locker</option> 
+                  <option value="">Select Locker</option>
                 </select>
                 <label>Available Lockers</label>
               </div>
@@ -250,7 +250,7 @@ tr, td {
           while ($row = mysqli_fetch_array($result)):
         ?>
         <!-- Start external locker source info -->
-        <li>
+        <li tabindex="0" role="button" class="fix-outline">
           <div class="collapsible-header">
             <?php echo $row['name']; ?>
           </div>

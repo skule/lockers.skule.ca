@@ -26,8 +26,8 @@ padding-top: 30px;
 
       <!-- Skule Logo -->
       <a href="index.php" class="brand-logo center" style="padding: 0;">
-        <img class="logo-img col" src="img/skule_logo.png" alt="logo">
-        <img class="logo-img-lockers" src="img/lockers.png" alt="logo">
+        <img class="logo-img col" src="img/skule_logo.png" alt="SKULE">
+        <img class="logo-img-lockers" src="img/lockers.png" alt="Lockers">
       </a>
 
       <!-- Nav - Mobile Button -->

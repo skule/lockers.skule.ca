@@ -2,7 +2,7 @@
     <div class="container ">
       <div class="row valign-wrapper">
         <div class="col s6">
-          <img src="img/skule_crest.png" class="footer-img"></img>
+          <img src="img/skule_crest.png" class="footer-img" alt="University of Toronto Engineering Society"></img>
         </div>
         <div class="col s12">
           <p class="grey-text text-lighten-4">
@@ -96,7 +96,7 @@
         data:{location:location,size:size},
         dataType: "text",
         success:function(data) {
-          debugger;
+          // debugger;
           //Create HTML from returned data
           var dataArr = JSON.parse(data);
           var selectHTML = "";
