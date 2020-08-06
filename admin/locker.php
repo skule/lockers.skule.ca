@@ -65,6 +65,9 @@
         <div class="col s12 m6">
           <a href="#addlocker" class="btn green modal-trigger">Add New locker</a>
         </div>
+        <div class="col s12 m6 right">
+          <a href="locker_bulk.php" class="btn green modal-trigger right">Bulk Import Lockers</a>
+        </div>
         <div class="col s12 m6">
           <div class="input-field">
             <i class="material-icons prefix">search</i>
