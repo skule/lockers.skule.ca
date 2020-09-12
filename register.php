@@ -1,6 +1,5 @@
 <?php
   session_start();
-  include 'navbar.php';
   require 'model/db.php';
   require 'functions.php';
 
@@ -57,6 +56,10 @@
       }
     }
   }
+
+
+
+  include 'navbar.php';
 ?>
 <style>
 // Finally sticky footer! Good god have mercy
