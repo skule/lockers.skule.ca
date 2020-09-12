@@ -32,7 +32,7 @@
     $semail = mysqli_real_escape_string($conn, $_SESSION['s_email']);
     $lid = mysqli_real_escape_string($conn, $_POST['lockerid']);
 
-    if ($end <= $start) {
+    if (strtotime($end) <= strtotime($start)) {
       $msg = "Please pick a correct date";
       $msgClass = "red";
     } else {
