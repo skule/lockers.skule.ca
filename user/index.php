@@ -19,7 +19,7 @@
                     FROM `record`
                     WHERE record_sub='active'
                       AND record_status='approved'
-                      AND student_id='".$_SESSION['s_id']."'";
+                      AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
                   echo "<h5>".$row['sub']."</h5>";
@@ -43,7 +43,7 @@
                     "SELECT COUNT(record_status) as status
                     FROM `record`
                     WHERE record_status='pending'
-                      AND student_id='".$_SESSION['s_id']."'";
+                      AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
                   echo "<h5>".$row['status']."</h5>";
@@ -66,7 +66,7 @@
                   $sql = "SELECT COUNT(record_sub) as sub
                     FROM `record`
                     WHERE record_sub='expired'
-                      AND student_id='".$_SESSION['s_id']."'";
+                      AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
                   echo "<h5>".$row['sub']."</h5>";
@@ -105,7 +105,7 @@
               <tbody>
                 <?php
                   $i = 1;
-                  $sql = "SELECT * FROM `record` WHERE student_id='".$_SESSION['s_id']."'";
+                  $sql = "SELECT * FROM `record` WHERE student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
                   while ($row = mysqli_fetch_array($result)):
                 ?>
@@ -134,7 +134,7 @@
                 <?php echo $_SESSION['s_name']; ?></p>
             <p><span class="grey-text">Email:</span>
                 <?php echo $_SESSION['s_email']; ?></p>
-            <a href="user_edit.php?id=<?php echo $_SESSION['s_id']; ?>"
+            <a href="user_edit.php"
                 class="btn1"><i class="fas fa-pencil-alt"></i>&nbsp Edit / Change Password</a>
           </div>
         </li>

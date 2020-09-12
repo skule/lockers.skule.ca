@@ -179,7 +179,7 @@
                     <div class="col s6 grey-text text-darken-1">
                       <h4>
                         <?php
-                          $sql = "SELECT COUNT(student_id) as total FROM student";
+                          $sql = "SELECT COUNT(student_email) as total FROM student";
                           $result = mysqli_query($conn, $sql);
                           $row = mysqli_fetch_array($result);
                           echo $row['total'];
@@ -276,7 +276,7 @@
             </li>
             <?php
               // Total student
-              $sql = "SELECT COUNT(student_id) as total from `student`";
+              $sql = "SELECT COUNT(student_email) as total from `student`";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               echo "<li class='collection-item'>Total student: <span class='secondary-content green-text'>".$row['total']."</span></li>";

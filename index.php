@@ -76,8 +76,8 @@ tr, td {
           <p>
             Locker rentals from the University of Toronto Engineering Society
             are available every year starting in September. Rentals are on a
-            first-come first-serve basis. <?php if(isset($_SESSION['s_id'])) echo("<!--"); ?>To book a locker,
-            <a href="register.php">register</a> or <a href="login.php">login</a>. <?php if(isset($_SESSION['s_id'])) echo("-->"); ?>
+            first-come first-serve basis. <?php if(isset($_SESSION['s_email'])) echo("<!--"); ?>To book a locker,
+            <a href="register.php">register</a> or <a href="login.php">login</a>. <?php if(isset($_SESSION['s_email'])) echo("-->"); ?>
           </p>
         </li>
       </ul>
@@ -219,7 +219,7 @@ tr, td {
               </div>
 
               <?php
-                if(isset($_SESSION['s_id']))
+                if(isset($_SESSION['s_email']))
                   echo("<a href='booking.php?id='");
                 else
                   echo("<a href='/login.php?return-to=booking.php?id='");

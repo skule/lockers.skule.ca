@@ -15,7 +15,7 @@
   if (isset($_REQUEST['id'])) {
     $id = mysqli_real_escape_string($conn, $_REQUEST['id']);
     $sql = "SELECT * FROM `locker` WHERE `locker_id`='$id'";
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
 
     $row = mysqli_fetch_array($result);
 
@@ -26,10 +26,10 @@
 
   // Process booked locker and insert into database
   if (filter_has_var(INPUT_POST, 'book')) {
-    $start = mysqli_real_escape_string($conn, $_POST['start']);
-    $end = mysqli_real_escape_string($conn, $_POST['end']);
+    $start = mysqli_real_escape_string($conn, date("Y-m-d",strtotime($_POST['start'])));
+    $end = mysqli_real_escape_string($conn, date("Y-m-d",strtotime($_POST['end'])));
     $price = mysqli_real_escape_string($conn, $_POST['price']);
-    $sid = mysqli_real_escape_string($conn, $_POST['studentid']);
+    $semail = mysqli_real_escape_string($conn, $_SESSION['s_email']);
     $lid = mysqli_real_escape_string($conn, $_POST['lockerid']);
 
     if ($end <= $start) {
@@ -38,11 +38,11 @@
     } else {
       $totalPrice = get_price($start, $end);
 
-      $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_id, locker_id)
-      VALUES ('$start', '$end', '$totalPrice', '$sid', '$lid');";
+      $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id)
+      VALUES ('$start', '$end', '$totalPrice', '$semail', '$lid');";
       $sql .= "UPDATE `locker` SET locker_status='Booked' WHERE locker_id='$lid'";
 
-      $result = mysqli_multi_query($conn, $sql);
+      $result = mysqli_multi_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
       $msg = "<a href='index.php' class='white-text'><i class='fas fa-arrow-circle-left'></i></a> Booking success. Pending admin approval.";
       $msgClass = "green";
     }
@@ -73,11 +73,6 @@
                     <input readonly type="text" id="lockerid" name="lockerid"
                         value="<?php echo $_SESSION['locker_id']; ?>">
                     <label for="id">Locker No</label>
-                </div>
-                <div class="input-field col s6 m6">
-                    <input readonly type="text" id="studentid" name="studentid"
-                        value="<?php echo $_SESSION['s_id']; ?>">
-                    <label for="id">Student ID</label>
                 </div>
             </div>
             <div class="row">

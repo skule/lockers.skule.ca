@@ -5,9 +5,9 @@
 
   $msg = $msgClass = '';
 
-  if (isset($_SESSION['s_id'])) {
-    $id = $_SESSION['s_id'];
-    $sql = "SELECT * FROM `student` WHERE `student_id`='$id'";
+  if (isset($_SESSION['s_email'])) {
+    $email = $_SESSION['s_email'];
+    $sql = "SELECT * FROM `student` WHERE `student_email`='$email'";
     $result = mysqli_query($conn, $sql);
 
     $row = mysqli_fetch_array($result);
@@ -17,48 +17,41 @@
 
   // Check for submit
   if (filter_has_var(INPUT_POST, 'submit')){
-    $id = $_SESSION['s_id'];
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Check required fields
-    if (empty($name) || empty($email)){
+    if (empty($name) || empty($phone)){
       $msg = "Please fill in all fields";
       $msgClass = "red";
     } else {
-      // Check email
-      if (filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-        $msg = "Please use a valid email";
-        $msgClass = "red";
-      } else {
-        if(!empty($password)) { //If the password needs to be changed,
-          // Hashing the password
-          $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
+      if(!empty($password)) { //If the password needs to be changed,
+        // Hashing the password
+        $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-          // Update databasee
-          $sql = "UPDATE `student`
-            SET `student_pwd`='$hashedPwd', `student_name`='$name',
-            `student_email`='$email' WHERE student_id='$id'";
-        } else { //If the password does not need to be changed
-          // Insert user into database
-          $sql = "UPDATE `student`
-            SET `student_name`='$name',
-            `student_email`='$email' WHERE student_id='$id'";
-        }
-
-        if (mysqli_query($conn, $sql)){
-          $msg = "Update success";
-          $msgClass = "green";
-          //We've updated the database, fetch the new values
-          $sql = "SELECT * FROM `student` WHERE `student_id`='$id'";
-          $result = mysqli_query($conn, $sql);
-          $row = mysqli_fetch_array($result);
-        } else {
-          $msg = "Update error: " . $sql . "<br>" . mysqli_error($conn);
-          $msgClass = "red";
-        }
+        // Update databasee
+        $sql = "UPDATE `student`
+          SET `student_pwd`='$hashedPwd', `student_name`='$name', `student_phone`='$phone' WHERE student_email='$email'";
+      } else { //If the password does not need to be changed
+        // Insert user into database
+        $sql = "UPDATE `student`
+          SET `student_name`='$name',  `student_phone`='$phone' WHERE student_email='$email'";
       }
+
+      if (mysqli_query($conn, $sql)){
+        $msg = "Update success";
+        $msgClass = "green";
+        //We've updated the database, fetch the new values
+        $sql = "SELECT * FROM `student` WHERE `student_email`='$email'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($result);
+      } else {
+        $msg = "Update error. Please contact the administrator with the following error: <code> $sql <br/>" . mysqli_error($conn)."</code>";
+        $msgClass = "red";
+      }
+
     }
   }
 ?>
@@ -81,13 +74,6 @@
                 <form class="col s12" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" novalidate>
                   <div class="row">
                     <div class="input-field">
-                      <i class="material-icons prefix">credit_card</i>
-                      <input type="text" id="id" name="id" value="<?php echo $row['student_id']; ?>" disabled>
-                      <label for="id">User Id</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="input-field">
                       <i class="material-icons prefix">account_circle</i>
                       <input type="text" id="name" name="name" value="<?php echo $row['student_name']; ?>">
                       <label for="name">Full Name</label>
@@ -96,8 +82,16 @@
                   <div class="row">
                     <div class="input-field">
                       <i class="material-icons prefix">email</i>
-                      <input type="email" id="email" name="email" value="<?php echo $row['student_email']; ?>">
+                      <input disabled="disabled" type="email" id="email" name="fakeemail" value="<?php echo $row['student_email']; ?>">
+                      <input type="hidden" name="email" value="<?php echo $row['student_email']; ?>">
                       <label for="email">Email</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field">
+                      <i class="material-icons prefix">phone</i>
+                      <input type="tel" id="phone" name="phone" value="<?php echo($row['student_phone']); ?>"/>
+                      <label for=phone>Phone Number</phone>
                     </div>
                   </div>
                   <div class="row">

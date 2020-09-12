@@ -39,7 +39,7 @@ padding-top: 30px;
       <!-- Nav - Desktop -->
       <ul class="right hide-on-med-and-down">
         <!-- If logged in -->
-        <?php if(isset($_SESSION['s_id'])): ?>
+        <?php if(isset($_SESSION['s_email'])): ?>
           <li><a href="index.php">Home</a></li>
           <li><a href="user/index.php">Dashboard</a></li>
           <li><a href="logout.php">Logout</a></li>
@@ -54,7 +54,7 @@ padding-top: 30px;
       <!-- Nav - Mobile -->
       <ul id="nav-mobile" class="side-nav right links">
       <!-- If logged in -->
-        <?php if(isset($_SESSION['s_id'])): ?>
+        <?php if(isset($_SESSION['s_email'])): ?>
           <li><a href="index.php">Home</a></li>
           <li><a href="user/index.php">Dashboard</a></li>
           <li><a href="logout.php">Logout</a></li>
