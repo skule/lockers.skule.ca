@@ -4,7 +4,7 @@
   require 'model/db.php';
 
   // if user already login redirect them to index page
-  if (isset($_SESSION['s_id'])) {
+  if (isset($_SESSION['s_email'])) {
     header("Location: index.php");
   }
 
@@ -13,20 +13,20 @@
 
   if (filter_has_var(INPUT_POST, 'submit')) {
     // Get form data
-    $id = mysqli_real_escape_string($conn, $_POST['userid']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Check if inputs are empty
-    if (!empty($id) && !empty($password)){
+    if (!empty($email) && !empty($password)){
       // success
-      $sql = "SELECT * FROM `student` WHERE `student_id`='$id'";
+      $sql = "SELECT * FROM `student` WHERE `student_email`='$email'";
       $result = mysqli_query($conn, $sql);
       $resultCheck = mysqli_num_rows($result);
       $row = mysqli_fetch_assoc($result);
 
       if ($resultCheck < 1) {
         // error, id not exist
-        $msg = "Invalid user Id or password";
+        $msg = "Invalid email or password";
         $msgClass = "red";
       } else {
         // verify password hash
@@ -36,7 +36,6 @@
           $msg = "Invalid password";
           $msgClass = "red";
         } elseif ($pwdCheck == true) {
-          $_SESSION['s_id'] = $row['student_id'];
           $_SESSION['s_name'] = $row['student_name'];
           $_SESSION['s_email'] = $row['student_email'];
 
@@ -92,8 +91,8 @@ body {
               <form class="col s12" method="POST" action="#" novalidate>
                 <div class="row">
                   <div class="input-field">
-                    <input type="text" id="userid" name="userid">
-                    <label for="userid">Student Number</label>
+                    <input type="text" id="email" name="email">
+                    <label for="email">Email</label>
                   </div>
                 </div>
                 <div class="row">

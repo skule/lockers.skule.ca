@@ -27,7 +27,7 @@
               <div class="row">
                 <div class="col s8">
                     <span class="name white-text">
-                      &nbsp <?php echo $_SESSION['s_id']; ?>
+                      &nbsp <?php echo $_SESSION['s_email']; ?>
                     </span>
                     <span class="email white-text">
                       &nbsp <?php echo $_SESSION['s_email']; ?>
@@ -38,7 +38,7 @@
           </li>
           <li><a class="white-text" href="index.php">&nbsp  Dashboard</a></li>
           <li><a class="white-text" href="../index.php"></i>&nbsp  Home</a></li>
-          <?php if (isset($_SESSION['s_id'])): ?>
+          <?php if (isset($_SESSION['s_email'])): ?>
             <li><a class="white-text" href="../logout.php">&nbsp Logout</a></li>
           <?php else: ?>
             <li><a  class="white-text" href="../login.php">&nbsp Login</a></li>
@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col s8">
             <a href="#">
-              <span class="name white-text">&nbsp<?php echo $_SESSION['s_id']; ?></span>
+              <span class="name white-text">&nbsp<?php echo $_SESSION['s_name']; ?></span>
             </a>
             <a href="#">
               <span class="email white-text">&nbsp<?php echo $_SESSION['s_email']; ?></span>
@@ -71,7 +71,7 @@
     </li>
     <li><a class="white-text" href="index.php">&nbsp  Dashboard</a></li>
     <li><a class="white-text" href="../index.php">&nbsp  Home</a></li>
-    <?php if (isset($_SESSION['s_id'])): ?>
+    <?php if (isset($_SESSION['s_email'])): ?>
       <li><a class="white-text" href="../logout.php">&nbsp Logout</a></li>
     <?php else: ?>
       <li><a class="white-text" href="../login.php"><i class="fas fa-sign-in-alt"></i>&nbsp Login</a></li>

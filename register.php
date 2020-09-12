@@ -2,9 +2,10 @@
   session_start();
   include 'navbar.php';
   require 'model/db.php';
+  require 'functions.php';
 
   // If user already logged in, redirect them to index page
-  if (isset($_SESSION['s_id'])) {
+  if (isset($_SESSION['s_email'])) {
     header("Location: index.php");
   }
 
@@ -13,7 +14,6 @@
   // Check for submit
   if (filter_has_var(INPUT_POST, 'submit')){
     // Get form data
-    $id = mysqli_real_escape_string($conn, $_POST['id']);
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $department = mysqli_real_escape_string($conn, $_POST['department']);
@@ -21,28 +21,27 @@
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     // Check required fields
-    if (empty($id) || empty($name) || empty($email) || empty($department) || empty($password) || empty($phone)){
-      $msg = "Please fill in all fields";
+    if (empty($name) || empty($email) || empty($department) || empty($password) || empty($phone) || !isset($_POST['disclaimer'])){
+      $msg = "Please fill in all fields and confirm that you have read the notice.";
       $msgClass = "red";
     } else {
 
       // Check email
-      if (filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-        $msg = "Please use a valid email";
+      if (strlen($email) > 320 || filter_var($email, FILTER_VALIDATE_EMAIL) === false || !is_email_utoronto($email)){
+        $msg = "Please use a valid UofT or EngSoc email";
         $msgClass = "red";
       } else {
         // Hashing the password
         $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         // Insert user into database
-        $sql = "INSERT INTO `student` (`student_id`, `student_pwd`,
+        $sql = "INSERT INTO `student` (`student_pwd`,
             `student_name`, `student_email`, `student_department`, `student_phone`)
-            VALUES ('$id', '$hashedPwd', '$name', '$email', '$department', '$student_phone')";
+            VALUES ('$hashedPwd', '$name', '$email', '$department', '$student_phone')";
 
         // TODO: User friendly error messages
         if (mysqli_query($conn, $sql)){
           //Register was successful, log user in
-          $_SESSION['s_id'] = $id;
           $_SESSION['s_name'] = $name;
           $_SESSION['s_email'] = $email;
 
@@ -90,15 +89,6 @@ body {
                 action="#"
                 novalidate>
 
-                <!-- Student Number -->
-                <div class="row">
-                  <div class="input-field">
-                    <input type="text" id="id" name="id"
-                      value="<?php echo isset($_POST['id']) ? htmlspecialchars($_POST['id']) : ''; ?>">
-                    <label for="id">Student Number</label>
-                  </div>
-                </div>
-
                 <!-- Name -->
                 <div class="row">
                   <div class="input-field">
@@ -113,7 +103,7 @@ body {
                   <div class="input-field">
                     <input type="email" id="email" name="email"
                       value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
-                    <label for="email">Student Email</label>
+                    <label for="email">Student Email (UofT or Skule)</label>
                   </div>
                 </div>
 
@@ -150,7 +140,13 @@ body {
                     <label for="userid">Password</label>
                   </div>
                 </div>
+                <div class="row">
+                  <p><b>Please note:</b> This system is intended for Engineering students only. By signing up, you understand and agree that if we find out that you are not an Engineering Undergraduate or an Engineering Graduate student, we will cut your lock and empty the contents of your locker.</p>
 
+                    <input type="checkbox" id="disclaimer" name="disclaimer"/>
+                    <label for="disclaimer">I have read and agree to the above</label>
+
+                </div>
                 <!-- Submit -->
                 <div class="row">
                   <p class="center-align">
@@ -158,6 +154,7 @@ body {
                       if(isset($_GET['return-to']))
                         echo("?return-to=".$_GET['return-to']);
                       ?>">Login</a><br><br>
+                      <!-- PAYPAL INTEGRATION HERE -->
                     <button type="submit" class="waves-effect waves-light btn blue" name="submit">
                       Register
                     </button>

@@ -64,7 +64,7 @@
         <thead class="blue darken-2 white-text">
           <tr class="myHead">
             <th>Locker Id</th>
-            <th>Student Id</th>
+            <th>Student Email</th>
             <th>Start</th>
             <th>End</th>
             <th>Price</th>
@@ -82,7 +82,7 @@
           ?>
           <tr>
             <td><?php echo $row['locker_id']; ?></td>
-            <td><?php echo $row['student_id']; ?></td>
+            <td><?php echo $row['student_email']; ?></td>
             <td><?php echo $row['record_start']; ?></td>
             <td><?php echo $row['record_end']; ?></td>
             <td><?php echo "$"."".$row['record_price']; ?></td>
