@@ -5,6 +5,7 @@ session_start();
 //Before anything, check to make sure we have a non-empty secret we can use for the HMAC. Else, throw an error and die
 $hmac_secret = file_get_contents("./paypal_hmac_secret");
 if($hmac_secret === false || empty($hmac_secret)){
+  http_response_code(500);
   die(json_encode(array(
     "error" => "Illegal HMAC secret. This is an internal server error. No transaction attempted."
   )));
@@ -12,6 +13,7 @@ if($hmac_secret === false || empty($hmac_secret)){
 
 //If the order ID is not set or it is badly formatted, throw error and die. This is important because we are putting the error ID into URL's and in the exec function. Also, this filters out any arrays passed in, which would break the HMAC function silently
 if(!isset($_GET['order']) || !preg_match('/[A-Z0-9]+/', $_GET['order'])){
+  http_response_code(400);
   die(json_encode(array(
     "error" => "Illegal order ID. No transaction attempted."
   )));
@@ -19,6 +21,7 @@ if(!isset($_GET['order']) || !preg_match('/[A-Z0-9]+/', $_GET['order'])){
 
 //Check the same with locker ID, make sure it exists and that no arrays are passed in as that would, again, break the HMAC function silently
 if(!isset($_GET['locker_id']) || gettype($_GET['locker_id']) !== "string"){
+  http_response_code(400);
   die(json_encode(array(
     "error" => "Illegal locker ID. No transaction attempted."
   )));
@@ -27,6 +30,7 @@ if(!isset($_GET['locker_id']) || gettype($_GET['locker_id']) !== "string"){
 //Get Oauth2 token using our credentials
 $response = json_decode(shell_exec('curl https://api.paypal.com/v1/oauth2/token    -H "Accept: application/json"    -H "Accept-Language: en_US"    -u "'.$API_CLIENT_ID.':'.$API_SECRET.'"    -d "grant_type=client_credentials"'));
 $token = $response->access_token;
+http_response_code(500);
 die(json_encode(array(
   "error" => "Couldn't get Oauth2 token from PayPal. No transaction attemtped"
 )));
@@ -37,6 +41,7 @@ $response_text = shell_exec('curl -X GET https://api.paypal.com/v2/checkout/orde
 $response = json_decode($response_text);
 //If it doesn't, throw an error and die
 if(!isset($response->purchase_units[0]->amount->currency_code) || !isset($response->purchase_units[0]->amount->value)){
+  http_response_code(500);
   die(json_encode(array(
     "error" => "Couldn't get order details. No transaction attempted.",
     "debug" => $response_text
@@ -51,6 +56,7 @@ $DB_SETTINGS['DONT_CHECK_CONNECTION'] = true; //Needed so we don't get a non-JSO
 include 'model/db.php'
 //Check databse connection. If not successful, throw an error and die.
 if(!$conn){
+  http_response_code(500);
   die(json_encode(array(
     "error" => "Couldn't connect to the database. No transaction attemtped",
     "debug" => mysqli_connect_error()
@@ -63,6 +69,7 @@ $res = mysqli_query($conn, $sql) or die(json_encode(array(
   "debug" => mysqli_error($conn)."\n$sql"
 )));
 if(mysqli_num_rows($res) != 1){
+  http_response_code(422);
   die(json_encode(array(
     "error" => "More/less than one locker found at given ID. No transaction attempted.",
     "debug" => "Row count: ".mysqli_num_rows($res)
@@ -73,6 +80,7 @@ $locker_price = mysqli_fetch_array($res)[0];
 //Assume lockers are always being sold for Canadian Dollars (CAD)
 if($order_currency_code !== "CAD" || $order_price !== number_format($locker_price, 2, '.', '')){
   die(json_encode(array(
+    http_response_code(422);
     "error" => "Incorrect amount in order. No transaction attempted.",
     "debug" => "Locker price is $locker_price and order was for $order_price $order_currency_code.";
   )));
@@ -85,6 +93,7 @@ $response = json_decode($response_text);
 //Check if we got back a response in the format we expect. If not, throw an error and die.
 if(!isset($response -> purchase_units[0] -> payments -> captures[0] -> status) || !isset($response -> purchase_units[0] -> payments -> captures[0] -> id)){
   die(json_encode(array(
+    http_response_code(500);
     "error" => "Couldn't get capture status. A transaction was attempted.",
     "debug" => $response_text
   )));
@@ -107,6 +116,7 @@ if($order_status == "COMPLETED"){
   ));
 //Otherwise, throw an error
 }else{
+  http_response_code(500);
   echo(json_encode(array(
     "error" => "Order incomplete. A transaction was attempted.",
     "debug" => $response_text
