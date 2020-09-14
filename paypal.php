@@ -2,6 +2,14 @@
 include 'model/paypal_creds.php';
 session_start();
 
+//Before anything, check to make sure we have a non-empty secret we can use for the HMAC. Else, throw an error and die
+$hmac_secret = file_get_contents("./paypal_hmac_secret");
+if($hmac_secret === false || empty($hmac_secret)){
+  die(json_encode(array(
+    "error" => "Illegal HMAC secret. This is an internal server error. No transaction attempted."
+  )));
+}
+
 //If the order ID is not set or it is badly formatted, throw error and die. This is important because we are putting the error ID into URL's and in the exec function. Also, this filters out any arrays passed in, which would break the HMAC function silently
 if(!isset($_GET['order']) || !preg_match('/[A-Z0-9]+/', $_GET['order'])){
   die(json_encode(array(
@@ -91,7 +99,7 @@ if($order_status == "COMPLETED"){
   $expires = $time + 173;
   echo(json_encode(
     array(
-      "token" => hash_hmac('ripemd160', $_SESSION['s_id'].$_GET['locker_id'].$expires.$capture_nr.$_GET['order'], file_get_contents("./paypal_hmac_secret")),
+      "token" => hash_hmac('ripemd160', $_SESSION['s_id'].$_GET['locker_id'].$expires.$capture_nr.$_GET['order'], $hmac_secret),
       "order" => $_GET['order'],
       "capture" => $capture_nr,
       "expires" => $expires

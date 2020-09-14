@@ -23,7 +23,7 @@
     $_SESSION['locker_price'] = $row['locker_price'];
     $_SESSION['locker_location'] = $row['locker_location'];
   }
-
+  $hmac_secret = file_get_contents("./paypal_hmac_secret")
   // When the form is submitted
   if (filter_has_var(INPUT_POST, 'submit')) {
     //Check to make sure no arrays are passed into the variables we'll be putting in the HMAC as that would break the function silently
@@ -32,10 +32,13 @@
       ob_start();
       var_dump($_POST, $_SESSION);
       $err_debug = ob_get_clean();
-    } else{
+    } else if($hmac_secret === false || empty($hmac_secret)) {
+      //Also check to make sure we have a valid HMAC secret, else, throw an error
+      $err = "No valid HMAC secret was found. This is an internal server error. A payment likely was made but we couldn't verify it and so we didn't assign you a locker. Please contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> with this error message for assistance."; 
+    } else {
       //If all parameters are of the correct type, continue by verifying the token.
       //Check if the MAC matches
-      if($_POST['token'] == hash_hmac('ripemd160', $_SESSION['user_id'].$_POST['lockerid'].$_POST['expires'].$_POST['capture'].$_POST['order'], file_get_contents("./paypal_hmac_secret"))){
+      if($_POST['token'] == hash_hmac('ripemd160', $_SESSION['user_id'].$_POST['lockerid'].$_POST['expires'].$_POST['capture'].$_POST['order'], $hmac_secret)){
         //If the MAC is valid, check if the token has expired
         $time = time();
         if($_POST['expires'] < $time){
