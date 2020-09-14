@@ -13,14 +13,14 @@ if($hmac_secret === false || empty($hmac_secret)){
 //If the order ID is not set or it is badly formatted, throw error and die. This is important because we are putting the error ID into URL's and in the exec function. Also, this filters out any arrays passed in, which would break the HMAC function silently
 if(!isset($_GET['order']) || !preg_match('/[A-Z0-9]+/', $_GET['order'])){
   die(json_encode(array(
-    "error" => "Illegal order ID"
+    "error" => "Illegal order ID. No transaction attempted."
   )));
 }
 
 //Check the same with locker ID, make sure it exists and that no arrays are passed in as that would, again, break the HMAC function silently
 if(!isset($_GET['locker_id']) || gettype($_GET['locker_id']) !== "string"){
   die(json_encode(array(
-    "error" => "Illegal locker ID"
+    "error" => "Illegal locker ID. No transaction attempted."
   )));
 }
 
