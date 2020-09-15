@@ -23,11 +23,11 @@
     $_SESSION['locker_price'] = $row['locker_price'];
     $_SESSION['locker_location'] = $row['locker_location'];
   }
-  $hmac_secret = file_get_contents("./paypal_hmac_secret")
+  $hmac_secret = file_get_contents("./paypal_hmac_secret");
   // When the form is submitted
   if (filter_has_var(INPUT_POST, 'submit')) {
     //Check to make sure no arrays are passed into the variables we'll be putting in the HMAC as that would break the function silently
-    if(gettype($_POST['locker_id']) !== "string" || gettype($_POST['expires']) !== "string" || gettype($_POST['capture']) !== "string" || gettype($_POST['order']) !== "string"){
+    if(gettype($_POST['lockerid']) !== "string" || gettype($_POST['expires']) !== "string" || gettype($_POST['capture']) !== "string" || gettype($_POST['order']) !== "string"){
       $err = "Your browser sent malformed parameters. A payment likely was made but we couldn't verify it and so we didn't assign you a locker. Please contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> with the following debug information\n";
       ob_start();
       var_dump($_POST, $_SESSION);
@@ -129,7 +129,7 @@ $(function(){
         $('form#order input[name=capture]')[0].value = window.obj.capture;
         $('form#order input[type=submit]').click();
       }else{
-        $('div#error-modal #message').html("The order failed with the following error: " + window.obj.error + "<br/>\nPlease contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> " (window.obj.debug === undefined ? "for assistance" : "with the following debug information so we can refund you if a payment was made and/or manually assign a locker to you."));
+        $('div#error-modal #message').html("The order failed with the following error: " + window.obj.error + "<br/>\nPlease contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> " + (window.obj.debug === undefined ? "for assistance" : "with the following debug information so we can refund you if a payment was made and/or manually assign a locker to you."));
         if(window.obj.debug !== undefined) $('div#error-modal #debug').html(window.obj.debug);
         $('div#error-modal').fadeIn(100);
       }
