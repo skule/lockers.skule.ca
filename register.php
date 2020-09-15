@@ -117,7 +117,7 @@ body {
                     <select id="department" name="department">
                       <option disabled selected></option>
                       <?php
-                        $departments = array("Chem", "Civ", "ECE", "EngSci", "Indy", "Mech", "Min", "MSE", "T1");
+                        $departments = array("Chem", "Civ", "ECE", "EngSci", "Indy", "Mech", "Min", "MSE", "T1", "Grad");
                         foreach ($departments as $department) {
                           //If a department was selected, keep it selected
                           echo("<option value=$department".(isset($_POST['department']) && $_POST['department'] == $department ? " selected" : "")." > $department </option>");
