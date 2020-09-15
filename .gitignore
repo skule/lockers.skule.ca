@@ -1,2 +1,4 @@
 model/dp.php
+model/paypal_creds.php
+paypal_hmac_secret
 .build

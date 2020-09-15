@@ -38,6 +38,7 @@
         } elseif ($pwdCheck == true) {
           $_SESSION['s_name'] = $row['student_name'];
           $_SESSION['s_email'] = $row['student_email'];
+          $_SESSION['s_phone'] = $row['student_phone'];
 
           //After logging in, if a return-to address was set, return there
           if(isset($_GET['return-to']))

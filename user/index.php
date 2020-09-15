@@ -134,6 +134,8 @@
                 <?php echo $_SESSION['s_name']; ?></p>
             <p><span class="grey-text">Email:</span>
                 <?php echo $_SESSION['s_email']; ?></p>
+            <p><span class="grey-text">Phone Number:</span>
+                <?php echo $_SESSION['s_phone']; ?></p>
             <a href="user_edit.php"
                 class="btn1"><i class="fas fa-pencil-alt"></i>&nbsp Edit / Change Password</a>
           </div>
