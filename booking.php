@@ -34,7 +34,7 @@
       $err_debug = ob_get_clean();
     } else if($hmac_secret === false || empty($hmac_secret)) {
       //Also check to make sure we have a valid HMAC secret, else, throw an error
-      $err = "No valid HMAC secret was found. This is an internal server error. A payment likely was made but we couldn't verify it and so we didn't assign you a locker. Please contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> with this error message for assistance."; 
+      $err = "No valid HMAC secret was found. This is an internal server error. A payment likely was made but we couldn't verify it and so we didn't assign you a locker. Please contact <a href='mailto:webmaster@skule.ca'>webmaster@skule.ca</a> with this error message for assistance.";
     } else {
       //If all parameters are of the correct type, continue by verifying the token.
       //Check if the MAC matches
