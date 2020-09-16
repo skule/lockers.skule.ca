@@ -180,8 +180,8 @@ tr, td {
                   <li>
                     <span style="color: #5da7a7;">Available: <?php echo $total ?></span>
                     &nbsp  &nbsp
-                    S: <?php echo $countS ?> &nbsp  &nbsp
-                    M: <?php echo $countM ?> &nbsp  &nbsp
+                    S: <?php echo $countS ?> &nbsp;  &nbsp;
+                    M: <?php echo $countM ?> &nbsp;  &nbsp;
                     L: <?php echo $countL ?>
                   </li>
                 <ul>
