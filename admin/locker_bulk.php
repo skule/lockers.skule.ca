@@ -15,7 +15,7 @@
         unlink($_FILES["lockers"]["tmp_name"]);
 
     //If we need to delete existing lockers, do so. Also delete buildings since we're updating that too (my God, the data redundancy in this thing)
-    if(isset($_POST['overwrite']) && $_POST['overwrite']){
+    if(isset($_POST['overwrite']) && $_POST['overwrite'] == "true"){
       mysqli_query($conn, "TRUNCATE TABLE locker");
       mysqli_query($conn, "TRUNCATE TABLE buildings");
     }
