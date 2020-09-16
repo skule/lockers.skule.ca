@@ -76,7 +76,7 @@
           $sql .= "UPDATE `locker` SET locker_status='Booked' WHERE locker_id='$lid'";
 
           $result = mysqli_multi_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
-          $msg = "<a href='index.php' class='white-text'><i class='fas fa-arrow-circle-left'></i></a> Booking success.";
+          $msg = "<a href='index.php' class='white-text'><i class='fas fa-arrow-circle-left'></i></a> Booking success. Locker ID: ".htmlspecialchars($lid);
           $msgClass = "green";
         }
       }
