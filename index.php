@@ -144,6 +144,16 @@ tr, td {
                   <li class="location"><b><?php echo $row7['name']; ?></b></li>
                   <!-- Get count of Available Lockers by size -->
                   <?php
+                    // X-Small
+                    $countResult = mysqli_query($conn,
+                      "SELECT COUNT(locker_status) as countXS
+                      FROM `locker`
+                      WHERE locker_status='Available'
+                        AND `locker_location` = '" .$row7['name']. "'
+                        AND locker_size = 'X-Small'");
+                    $row1 = mysqli_fetch_array($countResult);
+                    $countXS = $row1['countXS'];
+
                     // Small
                     $countResult = mysqli_query($conn,
                       "SELECT COUNT(locker_status) as countS
@@ -175,11 +185,12 @@ tr, td {
                     $countL = $row1['countL'];
 
                     // Total
-                    $total = $countS + $countM + $countL;
+                    $total = $countXS + $countS + $countM + $countL;
                   ?>
                   <li>
                     <span style="color: #5da7a7;">Available: <?php echo $total ?></span>
                     &nbsp  &nbsp
+                    XS: <?php echo $countXS ?> &nbsp; &nbsp;
                     S: <?php echo $countS ?> &nbsp;  &nbsp;
                     M: <?php echo $countM ?> &nbsp;  &nbsp;
                     L: <?php echo $countL ?>
