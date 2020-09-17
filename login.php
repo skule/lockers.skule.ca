@@ -1,6 +1,5 @@
 <?php
   session_start();
-  include 'navbar.php';
   require 'model/db.php';
 
   // if user already login redirect them to index page
@@ -56,6 +55,7 @@
     mysqli_close($conn);
   }
 
+  include 'navbar.php';
 ?>
 
 <style>
