@@ -4,9 +4,9 @@ CPanel via this repository.
 
 `.config.yml` contains config info.
 
-To Deploy via the `lockersbeta` cpanel:
+To Deploy via the `lockers` cpanel:
 2. Click `Git Version Control`
-3. Click on the repo `lockersbeta`
+3. Click on the repo `lockers`
 4. On the nav bar, click on `Pull or Deploy`
 5. Click `Update from Remote` to fetch latest repo changes
 6. Click `Deply HEAD Commit` to deploy

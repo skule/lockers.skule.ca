@@ -96,7 +96,7 @@
 <script src="https://www.paypal.com/sdk/js?client-id=ATbzqfZdbq6Yx1nDbab1HQDf5Zrs0CSVoFxi3cQfnqnrvfcdKzalfZJKycfGuhO1Gt4VfBMmKrbLAbXi&currency=CAD"></script>
 <script>
 //Echo Self-XSS warning
-  console.log("%cSTOP!\n%cDon't listen to anyone who tells you to paste anything in here.\nThey're trying to hack you and probably trying to gain access to your PayPal account.\n%cMore info: https://lockersbeta.skule.ca/self-xss.php", "color: red; font-size: 50pt; text-shadow: 0 0 3px black;", "color: red; font-size: 20pt;", "color: red; font-size: 13pt;");
+  console.log("%cSTOP!\n%cDon't listen to anyone who tells you to paste anything in here.\nThey're trying to hack you and probably trying to gain access to your PayPal account.\n%cMore info: https://lockers.skule.ca/self-xss.php", "color: red; font-size: 50pt; text-shadow: 0 0 3px black;", "color: red; font-size: 20pt;", "color: red; font-size: 13pt;");
 
 //Modal
 $(function(){
