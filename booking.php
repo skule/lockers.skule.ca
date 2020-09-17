@@ -4,6 +4,14 @@
   include 'navbar.php';
   require_once 'model/db.php';
 
+  //Booking start and end dates, yyyy-mm-dd
+  $BOOKING_START_DATE = "2020-10-05";
+  $BOOKING_END_DATE = "2021-05-31";
+
+  //Override anything the user might have changed in the dates
+  $_POST['start'] = $BOOKING_START_DATE;
+  $_POST['end'] = $BOOKING_END_DATE;
+
   $msg = $msgClass = '';
   function get_price($date1, $date2) {
     $diff = date_diff(date_create($date1), date_create($date2));
@@ -200,11 +208,11 @@ $(function(){
             </div>
             <div class="row">
                 <div class="input-field col s6 m6">
-                    <input id="start" type="text" class="datepicker" name="start">
+                    <input readonly value="<?php echo($BOOKING_START_DATE); ?>" id="start" type="text" class="datepicker-disabled" name="start">
                     <label for="start">Start date</label>
                 </div>
                 <div class="input-field col s6 m6">
-                    <input id="end" type="text" class="datepicker" name="end">
+                    <input readonly value="<?php echo($BOOKING_END_DATE); ?>" id="end" type="text" class="datepicker-disabled" name="end">
                     <label for="end">End date</label>
                 </div>
             </div>
