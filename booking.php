@@ -77,10 +77,8 @@
           $msg = "Please pick a correct date";
           $msgClass = "red";
         } else {
-          $totalPrice = get_price($start, $end);
-
           $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id, record_order_id, record_capture_id, record_status, record_sub)
-          VALUES ('$start', '$end', '$totalPrice', '$semail', '$lid', '$order_id', '$capture_id', 'approved', 'active');";
+          VALUES ('$start', '$end', '$price', '$semail', '$lid', '$order_id', '$capture_id', 'approved', 'active');";
           $sql .= "UPDATE `locker` SET locker_status='Booked' WHERE locker_id='$lid'";
 
           $result = mysqli_multi_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
