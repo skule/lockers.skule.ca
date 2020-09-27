@@ -76,9 +76,15 @@ tr, td {
           <p>
             Locker rentals from the University of Toronto Engineering Society
             are available every year starting in September. Rentals are on a
-            first-come first-serve basis. <?php if(isset($_SESSION['s_email'])) echo("<!--"); ?>To book a locker,
-            <a href="register.php">register</a> or <a href="login.php">login</a>. <?php if(isset($_SESSION['s_email'])) echo("-->"); ?>
+            first-come first-serve basis.
           </p>
+          <p>
+            <b>Please Note:</b> Engineering buildings are currently only accessible between 8-6 Monday-Friday. Please take this into consideration when determining whether purchasing a locker is right for you.
+          </p>
+          <?php if(isset($_SESSION['s_email'])) echo("<!--"); ?>
+          <p>To book a locker, <a href="register.php">register</a> or <a href="login.php">login</a>. 
+          </p>
+          <?php if(isset($_SESSION['s_email'])) echo("-->"); ?>
         </li>
       </ul>
 
