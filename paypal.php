@@ -65,7 +65,7 @@ if(!$conn){
   )));
 }
 //Get locker price
-$sql = "SELECT `locker_price` FROM `locker` WHERE `locker_id` = ".mysqli_real_escape_string($conn, $_GET['locker_id']);
+$sql = "SELECT `locker_price` FROM `locker` WHERE `locker_id` = '".mysqli_real_escape_string($conn, $_GET['locker_id'])."'";
 $res = mysqli_query($conn, $sql) or die(json_encode(array(
   "error" => "Couldn't get locker price from database. No transaction attempted.",
   "debug" => mysqli_error($conn)."\n$sql"
