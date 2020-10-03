@@ -36,7 +36,36 @@
     }
   }
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $('.order-id').on("click",
+      function(){
+        var textarea = document.createElement("textarea");
+        textarea.value = this.innerText;
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      });
+  });
+</script>
+<style>
+		.order-id{
+		background-color: black;
+		border-radius: 5px;
+		cursor: pointer;
+		}
 
+		.order-id:hover{
+		background-color: inherit;
+	}
+
+  #order-asterisk{
+    margin: 3%;
+  }
+	</style>
 <div class="wrapper">
   <section class="section">
     <div class="container2">
@@ -70,6 +99,7 @@
             <th>Price</th>
             <th class="center-align">Status</th>
             <th>Approved by</th>
+            <th>Order ID<a style="color: inherit;" href="#order-asterisk">*</a> <span style="font-size: .75em;">(Click to Copy)</span></th>
             <th colspan="2" class="center">Actions</th>
           </tr>
         </thead>
@@ -88,6 +118,7 @@
             <td><?php echo "$"."".$row['record_price']; ?></td>
             <td><?php echo $row['record_status']; ?></td>
             <td><?php echo $row['record_approved_by']; ?></td>
+            <td><span class="order-id"><?php echo $row['record_order_id'] ?></span></td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
@@ -115,6 +146,7 @@
         </tbody>
       </table>
     </div>
+    <p id="order-asterisk">*Order ID: This is different from the value shown to the user. The user is shown a two-part number, the first part of which is the order ID. The second part is the "capture ID" and is only relevant for technical debugging.</p>
   </section>
 </div>
 <?php
