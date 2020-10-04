@@ -63,7 +63,7 @@ $(function(){
 	}
 
   #order-asterisk{
-    margin: 3%;
+    margin: 1%;
   }
 	</style>
 <div class="wrapper">
