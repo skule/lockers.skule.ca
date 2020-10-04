@@ -50,6 +50,38 @@ $(function(){
         textarea.remove();
       });
   });
+  //Thanks, sampopes from StackOverflow!
+      function fnExcelReport(){
+        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j=0;
+        tab = document.getElementById('myTable'); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)){      // If Internet Explorer
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+      }
 </script>
 <style>
 		.order-id{
@@ -63,7 +95,13 @@ $(function(){
 	}
 
   #order-asterisk{
-    margin: 3%;
+    margin: 1%;
+    margin-bottom: 1%;
+  }
+
+  #btnExport{
+    margin: 1%;
+    margin-top: 0;
   }
 	</style>
 <div class="wrapper">
@@ -77,7 +115,6 @@ $(function(){
       <h5>Rental Records</h5>
       <div class="divider"></div>
       <br>
-
       <!-- Search field -->
       <div class="row valign">
         <div class="col s12 m6 l6 right">
@@ -147,8 +184,11 @@ $(function(){
       </table>
     </div>
     <p id="order-asterisk">*Order ID: This is different from the value shown to the user. The user is shown a two-part number, the first part of which is the order ID. The second part is the "capture ID" and is only relevant for technical debugging.</p>
+    <button class="btn" id="btnExport" onclick="fnExcelReport();"> Export as XLSX </button>
   </section>
 </div>
+
+<iframe id="txtArea1" style="display:none"></iframe>
 <?php
   mysqli_close($conn);
   include 'footer.php';
