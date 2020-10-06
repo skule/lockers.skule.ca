@@ -15,7 +15,7 @@
     $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // Check if the input is empty
-    if (!empty($id) && !empty($username) && !empty($email)) {
+    if (!empty($username) && !empty($email)) {
       // pass
       $sql = "INSERT INTO `admin` (`admin_username`, `admin_email`, `admin_password`)
       VALUES (`$username`, `$email`, `$hashedPwd`)";
