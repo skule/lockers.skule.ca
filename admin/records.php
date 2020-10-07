@@ -148,14 +148,14 @@ $(function(){
             while ($row = mysqli_fetch_array($result)):
           ?>
           <tr>
-            <td><?php echo $row['locker_id']; ?></td>
-            <td><?php echo $row['student_email']; ?></td>
-            <td><?php echo $row['record_start']; ?></td>
-            <td><?php echo $row['record_end']; ?></td>
-            <td><?php echo "$"."".$row['record_price']; ?></td>
-            <td><?php echo $row['record_status']; ?></td>
-            <td><?php echo $row['record_approved_by']; ?></td>
-            <td><span class="capture-id"><?php echo $row['record_capture_id'] ?></span></td>
+            <td><?php echo htmlspecialchars($row['locker_id']); ?></td>
+            <td><?php echo htmlspecialchars($row['student_email']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_start']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_end']); ?></td>
+            <td><?php echo htmlspecialchars("$"."".$row['record_price']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_status']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_approved_by']); ?></td>
+            <td><span class="capture-id"><?php echo htmlspecialchars($row['record_capture_id']); ?></span></td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
