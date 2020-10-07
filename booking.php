@@ -117,7 +117,8 @@ $(function(){
             value: '<?php
               //Clean up any character other than numbers and the decimal seperator ('.')
               echo(number_format(preg_replace("/[^0-9.]+/","",$_SESSION['locker_price']), 2, ".", "")); ?>',
-            currency_code: 'CAD'
+            currency_code: 'CAD',
+            item_name: 'UofT Engineering Society Locker Rental for 1 year'
           }
         }]
       });
