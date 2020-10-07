@@ -39,7 +39,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-    $('.order-id').on("click",
+    $('.capture-id').on("click",
       function(){
         var textarea = document.createElement("textarea");
         textarea.value = this.innerText;
@@ -84,13 +84,13 @@ $(function(){
       }
 </script>
 <style>
-		.order-id{
+		.capture-id{
 		background-color: black;
 		border-radius: 5px;
 		cursor: pointer;
 		}
 
-		.order-id:hover{
+		.capture-id:hover{
 		background-color: inherit;
 	}
 
@@ -155,7 +155,7 @@ $(function(){
             <td><?php echo "$"."".$row['record_price']; ?></td>
             <td><?php echo $row['record_status']; ?></td>
             <td><?php echo $row['record_approved_by']; ?></td>
-            <td><span class="order-id"><?php echo $row['record_order_id'] ?></span></td>
+            <td><span class="capture-id"><?php echo $row['record_capture_id'] ?></span></td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
