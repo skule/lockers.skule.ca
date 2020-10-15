@@ -22,7 +22,7 @@
     $location = mysqli_real_escape_string($conn, $_POST['location']);
     $price = mysqli_real_escape_string($conn, $_POST['price']);
 
-    $sql = "UPDATE `locker` SET locker_id='$id', locker_status='$status', locker_price='$price' locker_location='$location' WHERE locker_id='$id'";
+    $sql = "UPDATE `locker` SET locker_id='$id', locker_status='$status', locker_price='$price', locker_location='$location' WHERE locker_id='$id'";
     if (mysqli_query($conn, $sql)) {
       $msg = "<a href='locker.php' class='white-text'><i class='fas fa-arrow-circle-left'></i></a> Update Successfull";
       $msgClass = "green";
@@ -44,7 +44,7 @@
       <div class="divider"></div><br><br>
 
       <!-- Locker edit form  -->
-      <form class="col s12" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" novalidate>
+      <form class="col s12" method="POST" action="?id=<?php echo htmlentities($_GET['id'], ENT_QUOTES); ?>" novalidate>
         <div class="row">
           <div class="input-field col s12">
             <input type="text" id="id" name="id" value="<?php echo $row['locker_id']; ?>">
