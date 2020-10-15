@@ -41,20 +41,20 @@
           <span class="white-text"><?php echo $msg; ?></span>
         </div>
       <?php endif ?>
-      <h5><i class="fas fa-edit"></i> Edit locker <span class="blue-text"><?php echo $row['locker_id']; ?></span></h5>
+      <h5><i class="fas fa-edit"></i> Edit locker <span class="blue-text"><?php echo htmlspecialchars($row['locker_id']); ?></span></h5>
       <div class="divider"></div><br><br>
 
       <!-- Locker edit form  -->
       <form class="col s12" method="POST" action="?id=<?php echo htmlentities($_GET['id'], ENT_QUOTES); ?>" novalidate>
         <div class="row">
           <div class="input-field col s12">
-            <input type="text" id="id" name="id" value="<?php echo $row['locker_id']; ?>">
+            <input type="text" id="id" name="id" value="<?php echo htmlentities($row['locker_id'], ENT_QUOTES); ?>">
             <label for="id">Locker ID (must be unique)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input id="location" type="text" name="location" value="<?php echo $row['locker_location']; ?>">
+            <input id="location" type="text" name="location" value="<?php echo htmlentities($row['locker_location'], ENT_QUOTES); ?>">
             <label for="location">Location</label>
           </div>
         </div>
