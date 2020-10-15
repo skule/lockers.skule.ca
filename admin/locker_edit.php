@@ -7,15 +7,6 @@
 
   $msg = $msgClass = '';
 
-  // handle the get request base on user id
-  if (isset($_REQUEST['id'])) {
-    $id = mysqli_real_escape_string($conn, $_REQUEST['id']);
-    $sql = "SELECT * FROM `locker` WHERE `locker_id`='$id'";
-    $result = mysqli_query($conn, $sql);
-
-    $row = mysqli_fetch_array($result);
-  }
-
   if (isset($_POST['submit'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
     $status = mysqli_real_escape_string($conn, $_POST['status']);
@@ -31,6 +22,16 @@
       $msgClass = "red";
     }
   }
+
+  // handle the get request base on user id
+  if (isset($_REQUEST['id'])) {
+    $id = mysqli_real_escape_string($conn, $_REQUEST['id']);
+    $sql = "SELECT * FROM `locker` WHERE `locker_id`='$id'";
+    $result = mysqli_query($conn, $sql);
+
+    $row = mysqli_fetch_array($result);
+  }
+
 ?>
 <div class="wrapper">
   <section class="section">
@@ -60,10 +61,22 @@
         <div class="row">
           <div class="input-field col s12">
             <select name="status" id='status'>
-              <option value="<?php echo $row['locker_status']; ?>" disabled selected><?php echo $row['locker_status']; ?></option>
-              <option value="Available">Available</option>
-              <option value="Booked">Booked</option>
-              <option value="Damaged">Damaged</option>
+              <option value="<?php echo htmlentities($row['locker_status'], ENT_QUOTES); ?>" selected><?php echo $row['locker_status']; ?></option>
+              <?php
+                $thisOption = "Available";
+                if($thisOption != $row['locker_status'])
+                  echo("<option value='".htmlentities($thisOption, ENT_QUOTES)."'>".htmlspecialchars($thisOption)."</option>");
+              ?>
+              <?php
+                $thisOption = "Booked";
+                if($thisOption != $row['locker_status'])
+                  echo("<option value='".htmlentities($thisOption, ENT_QUOTES)."'>".htmlspecialchars($thisOption)."</option>");
+              ?>
+              <?php
+                $thisOption = "Damaged";
+                if($thisOption != $row['locker_status'])
+                  echo("<option value='".htmlentities($thisOption, ENT_QUOTES)."'>".htmlspecialchars($thisOption)."</option>");
+              ?>
             </select>
             <label for='status'>Status</label>
           </div>
