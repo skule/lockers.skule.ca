@@ -1,4 +1,4 @@
-# Lockers Beta
+# Lockers
 ## Deployment
 CPanel via this repository.
 
