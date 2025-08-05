@@ -39,7 +39,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-    $('.order-id').on("click",
+    $('.capture-id').on("click",
       function(){
         var textarea = document.createElement("textarea");
         textarea.value = this.innerText;
@@ -84,13 +84,13 @@ $(function(){
       }
 </script>
 <style>
-		.order-id{
+		.capture-id{
 		background-color: black;
 		border-radius: 5px;
 		cursor: pointer;
 		}
 
-		.order-id:hover{
+		.capture-id:hover{
 		background-color: inherit;
 	}
 
@@ -131,31 +131,32 @@ $(function(){
           <tr class="myHead">
             <th>Locker Id</th>
             <th>Student Email</th>
+            <th>Book Date</th>
             <th>Start</th>
             <th>End</th>
             <th>Price</th>
-            <th class="center-align">Status</th>
-            <th>Approved by</th>
             <th>Order ID<a style="color: inherit;" href="#order-asterisk">*</a> <span style="font-size: .75em;">(Click to Copy)</span></th>
             <th colspan="2" class="center">Actions</th>
           </tr>
         </thead>
         <tbody>
           <?php
-            $sql = "SELECT * FROM `record`";
+			$sql = "SELECT r.locker_id, student_email, book_date, record_start, record_end, record_status, record_capture_id, record_id, locker_price FROM `record` r left join `locker` l on r.locker_id = l.locker_id;";
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_array($result)):
           ?>
           <tr>
-            <td><?php echo $row['locker_id']; ?></td>
-            <td><?php echo $row['student_email']; ?></td>
-            <td><?php echo $row['record_start']; ?></td>
-            <td><?php echo $row['record_end']; ?></td>
-            <td><?php echo "$"."".$row['record_price']; ?></td>
-            <td><?php echo $row['record_status']; ?></td>
-            <td><?php echo $row['record_approved_by']; ?></td>
-            <td><span class="order-id"><?php echo $row['record_order_id'] ?></span></td>
+            <td><?php echo htmlspecialchars($row['locker_id']); ?></td>
+            <td><?php echo htmlspecialchars($row['student_email']); ?></td>
+            <td><?php echo htmlspecialchars($row['book_date']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_start']); ?></td>
+            <td><?php echo htmlspecialchars($row['record_end']); ?></td>
+            <td><?php 
+				$price = $row['locker_price'] ?? 0;
+				echo "$" . (intval($price) == $price ? intval($price) : number_format($price, 2));
+			?></td>
+            <td><span class="capture-id"><?php echo htmlspecialchars($row['record_capture_id']); ?></span></td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
