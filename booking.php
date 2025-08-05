@@ -92,8 +92,10 @@
           $msg = "Please pick a correct date";
           $msgClass = "red";
         } else {
-          $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id, record_order_id, record_capture_id, record_status, record_sub)
-          VALUES ('$start', '$end', '$price', '$semail', '$lid', '$order_id', '$capture_id', 'approved', 'active');";
+          date_default_timezone_set('America/Toronto') ;
+          $time = date('Y-m-d H:i:s'); 
+          $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id, record_order_id, record_capture_id, record_status, record_sub,book_date)
+          VALUES ('$start', '$end', '$price', '$semail', '$lid', '$order_id', '$capture_id', 'approved', 'active','$time');";
           $sql .= "UPDATE `locker` SET locker_status='Booked' WHERE locker_id='$lid'";
 
           $result = mysqli_multi_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
@@ -108,9 +110,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://www.paypal.com/sdk/js?client-id=ATbzqfZdbq6Yx1nDbab1HQDf5Zrs0CSVoFxi3cQfnqnrvfcdKzalfZJKycfGuhO1Gt4VfBMmKrbLAbXi&currency=CAD"></script>
 <script>
-//Echo Self-XSS warning
-  console.log("%cSTOP!\n%cDon't listen to anyone who tells you to paste anything in here.\nThey're trying to hack you and probably trying to gain access to your PayPal account.\n%cMore info: https://lockers.skule.ca/self-xss.php", "color: red; font-size: 50pt; text-shadow: 0 0 3px black;", "color: red; font-size: 20pt;", "color: red; font-size: 13pt;");
-
 //Modal
 $(function(){
   $('div#error-modal').on("click",
@@ -135,7 +134,8 @@ $(function(){
             value: '<?php
               //Clean up any character other than numbers and the decimal seperator ('.')
               echo(number_format(preg_replace("/[^0-9.]+/","",$_SESSION['locker_price']), 2, ".", "")); ?>',
-            currency_code: 'CAD'
+            currency_code: 'CAD',
+            item_name: 'UofT Engineering Society Locker Rental for 1 year'
           }
         }]
       });
