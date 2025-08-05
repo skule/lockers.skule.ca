@@ -1,4 +1,8 @@
 # Lockers
+
+This repository is in the process of being updated to reflect the (slightly 
+newer) Plesk version of the lockers system.
+
 ## Deployment
 CPanel via this repository.
 
