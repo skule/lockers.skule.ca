@@ -5,10 +5,25 @@
   require_once 'model/db.php';
 
   //Booking start and end dates, yyyy-mm-dd
-  $BOOKING_START_DATE = "2020-10-05";
-  $BOOKING_END_DATE = "2021-05-31";
+  // Determine current date
+  $today = new DateTime();
 
-  //Override anything the user might have changed in the dates
+  // Determine academic year start and end
+  $year = (int)$today->format("Y");
+  $month = (int)$today->format("m");
+
+  // The booking period is always from Sept 1 to May 31
+  // You can book for the following academic year starting from June 1
+  // i.e. after the previous booking period ends
+  if ($month >= 6) {
+    $BOOKING_START_DATE = "$year-09-01";
+    $BOOKING_END_DATE = ($year + 1) . "-05-31";
+  } else {
+    $BOOKING_START_DATE = ($year - 1) . "-09-01";
+    $BOOKING_END_DATE = "$year-05-31";
+  }
+
+  // Override form inputs
   $_POST['start'] = $BOOKING_START_DATE;
   $_POST['end'] = $BOOKING_END_DATE;
 
