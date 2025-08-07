@@ -7,10 +7,10 @@
         <div class="col s12">
           <p class="grey-text text-lighten-4">
             A service of the University of Toronto Engineering Society.<br/>
-            For any questions or concerns, please contact the President at
-            <a href="president@skule.ca"> president@skule.ca </a>. For any
+            For any questions or concerns, please contact the Commuter Student Director at
+            <a href="mailto:commuter@skule.ca"> commuter@skule.ca </a>. For any
             bug reports, please contact the Webmaster at
-            <a href="webmaster@skule.ca">webmaster@skule.ca</a>
+            <a href="mailto:webmaster@skule.ca">webmaster@skule.ca</a>
           </p>
         </div>
       </div>
