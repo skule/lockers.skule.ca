@@ -6,38 +6,72 @@
   require '../model/db.php';
 
   $msg = $msgClass = '';
+  $allRecords = isset($_GET['allRecords']) && $_GET['allRecords'] == '1';
 
-  // Approve Booking
-  if (isset($_POST['update'])) {
+  // Handle form submission for refunding or archiving records
+  if (
+    isset($_POST['refund']) || isset($_POST['unrefund']) ||
+    isset($_POST['archive']) || isset($_POST['unarchive'])
+  ) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $adminId = $_SESSION['admin_id'];
-    $sql = "UPDATE `record` SET record_status='approved', record_sub='active', record_approved_by='$adminId' WHERE record_id='$id'";
+
+    // Determine the action and column to update
+    if (isset($_POST['refund']) || isset($_POST['unrefund'])) {
+      $column = 'is_refunded';
+      $value = isset($_POST['refund']) ? 'TRUE' : 'FALSE';
+      $action = isset($_POST['refund']) ? 'refunded' : 'un-refunded';
+    } else {
+      $column = 'is_archived';
+      $value = isset($_POST['archive']) ? 'TRUE' : 'FALSE';
+      $action = isset($_POST['archive']) ? 'archived' : 'un-archived';
+    }
+
+    // SQL insert or update
+    $sql = "INSERT INTO record_meta (record_id, $column)
+            VALUES ('$id', $value)
+            ON DUPLICATE KEY UPDATE $column = $value;";
 
     if (mysqli_query($conn, $sql)) {
-      $msg = "Update Successfull";
+      $msg = "Record $id $action";
       $msgClass = "green";
     } else {
-      $msg = "Error updating this recrod";
+      $msg = "Error marking record $id as $action";
       $msgClass = "red";
     }
   }
 
-  // Delete form handling
-  if (isset($_POST['delete'])) {
+  if (isset($_POST['update_comment'])) {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $sql = "DELETE FROM `record` WHERE `record_id`='$id'";
+    $comment = mysqli_real_escape_string($conn, $_POST['comment']);
+
+    $sql = "INSERT INTO record_meta (record_id, comment)
+            VALUES ('$id', '$comment')
+            ON DUPLICATE KEY UPDATE comment = '$comment'";
 
     if (mysqli_query($conn, $sql)) {
-      $msg = "Delete Successfull";
+      $msg = "Comment updated for record $id";
       $msgClass = "green";
     } else {
-      $msg = "Error deleting this recrod";
+      $msg = "Error updating comment for record $id";
       $msgClass = "red";
     }
   }
+
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+  function toggleArchive() {
+    const checked = document.getElementById('archiveToggle').checked;
+    const url = new URL(window.location.href);
+    
+    if (checked) {
+      url.searchParams.set('allRecords', '1');
+    } else {
+      url.searchParams.delete('allRecords');
+    }
+    
+    window.location.href = url.toString();
+  }
 $(function(){
     $('.capture-id').on("click",
       function(){
@@ -84,7 +118,7 @@ $(function(){
       }
 </script>
 <style>
-		.capture-id{
+  .capture-id{
 		background-color: black;
 		border-radius: 5px;
 		cursor: pointer;
@@ -103,7 +137,7 @@ $(function(){
     margin: 1%;
     margin-top: 0;
   }
-	</style>
+</style>
 <div class="wrapper">
   <section class="section">
     <div class="container2">
@@ -115,9 +149,18 @@ $(function(){
       <h5>Rental Records</h5>
       <div class="divider"></div>
       <br>
-      <!-- Search field -->
-      <div class="row valign">
-        <div class="col s12 m6 l6 right">
+      <!-- Filters -->
+      <div class="row valign-wrapper">
+        <!-- Archive toggle on the left -->
+        <div class="col s12 m6 l6 left-align flow-text">
+          <label>
+            <input type="checkbox" id="archiveToggle" <?php echo $allRecords ? 'checked' : ''; ?> onchange="toggleArchive()">
+            <span><?php echo $allRecords ? 'Show Only Active' : 'Show All'; ?></span>
+          </label>
+        </div>
+
+        <!-- Search field on the right -->
+        <div class="col s12 m6 l6 right-align">
           <div class="input-field">
             <i class="material-icons prefix">search</i>
             <input type="text" id="search">
@@ -135,13 +178,23 @@ $(function(){
             <th>Start</th>
             <th>End</th>
             <th>Price</th>
+            <th>Comment</th>
             <th>Order ID<a style="color: inherit;" href="#order-asterisk">*</a> <span style="font-size: .75em;">(Click to Copy)</span></th>
             <th colspan="2" class="center">Actions</th>
           </tr>
         </thead>
         <tbody>
           <?php
-			$sql = "SELECT r.locker_id, student_email, book_date, record_start, record_end, record_status, record_capture_id, record_id, locker_price FROM `record` r left join `locker` l on r.locker_id = l.locker_id;";
+			      $sql = "SELECT r.locker_id, student_email, book_date, record_start, record_end, 
+                           record_capture_id, r.record_id, locker_price, 
+                           comment, is_refunded, is_archived 
+                    FROM `record` r 
+                    left join `locker` l on r.locker_id = l.locker_id 
+                    left join `record_meta` m on r.record_id = m.record_id";
+            if (!$allRecords) {
+              $sql .= " WHERE is_archived = 0";
+            }
+            $sql .= " ORDER BY book_date DESC";
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_array($result)):
@@ -153,30 +206,57 @@ $(function(){
             <td><?php echo htmlspecialchars($row['record_start']); ?></td>
             <td><?php echo htmlspecialchars($row['record_end']); ?></td>
             <td><?php 
-				$price = $row['locker_price'] ?? 0;
-				echo "$" . (intval($price) == $price ? intval($price) : number_format($price, 2));
-			?></td>
+              $price = $row['locker_price'] ?? 0;
+              echo "$" . (intval($price) == $price ? intval($price) : number_format($price, 2));
+            ?></td>
+            <td>
+            <form method="POST" action="records.php" style="display: flex; align-items: center; gap: 2px; margin: 0;">
+              <input type="hidden" name="id" value="<?php echo $row['record_id']; ?>">
+              <input
+                type="text"
+                name="comment"
+                value="<?php echo htmlspecialchars($row['comment'] ?? ''); ?>"
+                style="flex: 1; min-width: 0; margin: 0; padding: 2px 4px; font-size: 13px; line-height: 1.2; height: 24px;"
+                placeholder="Add comment"
+              >
+              <button
+                type="submit"
+                name="update_comment"
+                class="btn-flat"
+                style="padding: 0; height: 24px; line-height: 1;"
+                title="Save"
+              >
+                <i class="fa fa-check" style="font-size: 14px;"></i>
+              </button>
+            </form>
+            </td>
             <td><span class="capture-id"><?php echo htmlspecialchars($row['record_capture_id']); ?></span></td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
-                <?php if ($row['record_status'] == 'pending'): ?>
-                  <button type='submit' name='update' class='green-text btn1 tooltipped' data-position='right' data-tooltip='Approve'>
-                    <i class="fas fa-check"></i>
+                <?php if ($row['is_refunded'] === '1'): ?>
+                  <button type='submit' name='unrefund' class='grey-text btn1 tooltipped' data-position='top' data-tooltip='Unmark as Refunded'>
+                    <i class="fa fa-share"></i>
                   </button>
                 <?php else: ?>
-                  <button type='submit' name='update' class='blue-text btn1 tooltipped' data-position='right' data-tooltip='Approve' disabled>
-                    <i class="fas fa-check"></i>
+                  <button type='submit' name='refund' class='green-text btn1 tooltipped' data-position='top' data-tooltip='Refund' onclick='return confirm(`Refund record <?php echo $row['record_id']; ?> ?`);' >
+                    <i class="fa fa-solid fa-reply"></i>
                   </button>
-                <?php endif ?>
+                <?php endif; ?>
               </form>
             </td>
             <td>
               <form method='POST' action='records.php'>
                 <input type='hidden' name='id' value='<?php echo $row['record_id']; ?>'>
-                <button type='submit' onclick='return confirm(`Delete this record <?php echo $row['record_id']; ?> ?`);' name='delete' class='red-text btn1 tooltipped' data-position='top' data-tooltip='Delete'>
-                  <i class='far fa-trash-alt'></i>
-                </button>
+                <?php if ($row['is_archived'] === '1'): ?>
+                  <button type='submit' name='unarchive' class='grey-text btn1 tooltipped' data-position='top' data-tooltip='Unarchive'>
+                    <i class='fa fa-solid fa-folder-open'></i>
+                  </button>
+                <?php else: ?>
+                  <button type='submit' name='archive' class='blue-text btn1 tooltipped' data-position='top' data-tooltip='Archive'>
+                    <i class='fa fa-archive'></i>
+                  </button>
+                <?php endif; ?>
               </form>
             </td>
           </tr>
