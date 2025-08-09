@@ -6,6 +6,7 @@
   require '../model/db.php';
 
   $msg = $msgClass = '';
+  $onlyAvailable = isset($_GET['onlyAvailable']) && $_GET['onlyAvailable'] == '1';
 
   // Form handling
   if (filter_has_var(INPUT_POST, 'submit')) {
@@ -50,6 +51,21 @@
   }
 ?>
 
+<script>
+  function toggleAvailable() {
+    const checked = document.getElementById('availableToggle').checked;
+    const url = new URL(window.location.href);
+    
+    if (checked) {
+      url.searchParams.set('onlyAvailable', '1');
+    } else {
+      url.searchParams.delete('onlyAvailable');
+    }
+    
+    window.location.href = url.toString();
+  }
+</script>
+
 <div class="wrapper">
   <section class="section">
     <div class="container2">
@@ -68,7 +84,20 @@
         <div class="col s12 m6 right">
           <a href="locker_bulk.php" class="btn green modal-trigger right">Bulk Import Lockers</a>
         </div>
-        <div class="col s12 m6">
+      </div>
+
+      <!-- Filters -->
+      <div class="row valign-wrapper">
+        <!-- Archive toggle on the left -->
+        <div class="col s12 m6 l6 left-align flow-text">
+          <label>
+            <input type="checkbox" id="availableToggle" <?php echo $onlyAvailable ? 'checked' : ''; ?> onchange="toggleAvailable()">
+            <span><?php echo $onlyAvailable ? 'Show All Status' : 'Show Only Available'; ?></span>
+          </label>
+        </div>
+
+        <!-- Search field on the right -->
+        <div class="col s12 m6 l6 right-align">
           <div class="input-field">
             <i class="material-icons prefix">search</i>
             <input type="text" id="search">
@@ -91,6 +120,8 @@
         <tbody>
           <?php
             $sql = "SELECT * FROM `locker`";
+            if ($onlyAvailable) $sql .= " WHERE locker_status = 'Available'";
+            $sql .= " ORDER BY locker_price";
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_array($result)):
