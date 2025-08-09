@@ -6,7 +6,8 @@
   require '../model/db.php';
 
   $msg = $msgClass = '';
-  $allRecords = isset($_GET['allRecords']) && $_GET['allRecords'] == '1';
+  $displayArchived = isset($_GET['displayArchived']) && $_GET['displayArchived'] == '1';
+  $onlySpecial = isset($_GET['onlySpecial']) && $_GET['onlySpecial'] == '1';
 
   // Handle form submission for refunding or archiving records
   if (
@@ -60,14 +61,26 @@
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  function toggleArchive() {
-    const checked = document.getElementById('archiveToggle').checked;
+  function toggleArchived() {
+    const checked = document.getElementById('archivedToggle').checked;
     const url = new URL(window.location.href);
     
     if (checked) {
-      url.searchParams.set('allRecords', '1');
+      url.searchParams.set('displayArchived', '1');
     } else {
-      url.searchParams.delete('allRecords');
+      url.searchParams.delete('displayArchived');
+    }
+    
+    window.location.href = url.toString();
+  }
+  function toggleOnlySpecial() {
+    const checked = document.getElementById('onlySpecialToggle').checked;
+    const url = new URL(window.location.href);
+    
+    if (checked) {
+      url.searchParams.set('onlySpecial', '1');
+    } else {
+      url.searchParams.delete('onlySpecial');
     }
     
     window.location.href = url.toString();
@@ -153,9 +166,19 @@ $(function(){
       <div class="row valign-wrapper">
         <!-- Archive toggle on the left -->
         <div class="col s12 m6 l6 left-align flow-text">
-          <label>
-            <input type="checkbox" id="archiveToggle" <?php echo $allRecords ? 'checked' : ''; ?> onchange="toggleArchive()">
-            <span><?php echo $allRecords ? 'Show Only Active' : 'Show All'; ?></span>
+          <label class="my-checkbox-container">
+            <span class="my-checkbox <?php echo $displayArchived ? 'checked' : ''; ?>"></span>
+            <input type="checkbox" id="archivedToggle" <?php echo $displayArchived ? 'checked' : ''; ?> onchange="toggleArchived()">
+            <span>Show Archived</span>
+          </label>
+        </div>
+
+        <!-- Refunded toggle on the left -->
+        <div class="col s12 m6 l6 left-align flow-text">
+          <label class="my-checkbox-container">
+            <span class="my-checkbox <?php echo $onlySpecial ? 'checked' : ''; ?>"></span>
+            <input type="checkbox" id="onlySpecialToggle" <?php echo $onlySpecial ? 'checked' : ''; ?> onchange="toggleOnlySpecial()">
+            <span>Show Only Refunded / Comments</span>
           </label>
         </div>
 
@@ -191,8 +214,11 @@ $(function(){
                     FROM `record` r 
                     left join `locker` l on r.locker_id = l.locker_id 
                     left join `record_meta` m on r.record_id = m.record_id";
-            if (!$allRecords) {
-              $sql .= " WHERE is_archived = 0";
+            $where = [];
+            if (!$displayArchived) $where[] = "is_archived = 0";
+            if ($onlySpecial) $where[] = "(is_refunded = 1 OR (comment IS NOT NULL AND comment != ''))";
+            if (count($where) > 0) {
+              $sql .= " WHERE " . implode(" AND ", $where);
             }
             $sql .= " ORDER BY book_date DESC";
             $result = mysqli_query($conn, $sql);
@@ -274,3 +300,27 @@ $(function(){
   mysqli_close($conn);
   include 'footer.php';
 ?>
+
+<style>
+  .my-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .my-checkbox {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+
+  .my-checkbox.checked {
+    background-color: #26a69a; /* teal accent */
+    border-color: #1e837a;    /* slightly darker teal border */
+  }
+</style>
