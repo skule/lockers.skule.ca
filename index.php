@@ -148,107 +148,124 @@ tr, td {
         <?php
           $result7 = mysqli_query($conn, "SELECT * FROM `buildings`");
           if($result7):
-            while($row7 = mysqli_fetch_array($result7)): ?>
-            <li tabindex="0" role="button" aira-expanded="false" onclick="$(this).attr('aira-expanded', $(this).attr('aira-expanded') == 'true' ? 'false' : 'true')" class="fix-outline">
-              <div class="collapsible-header">
-                <ul>
-                  <li class="location"><b><?php echo $row7['name']; ?></b></li>
-                  <!-- Get count of Available Lockers by size -->
-                  <?php
-                    // X-Small
-                    $countResult = mysqli_query($conn,
-                      "SELECT COUNT(locker_status) as countXS
-                      FROM `locker`
-                      WHERE locker_status='Available'
-                        AND `locker_location` = '" .$row7['name']. "'
-                        AND locker_size = 'X-Small'");
-                    $row1 = mysqli_fetch_array($countResult);
-                    $countXS = $row1['countXS'];
+            while($row7 = mysqli_fetch_array($result7)): 
+              // Count Available Lockers
+              $building_name = $row7['name'];
+              
+              $countResult = mysqli_query(
+                $conn,
+                "SELECT COUNT(*) as available_count
+                FROM locker l
+                JOIN buildings b
+                ON l.locker_location = b.name
+                WHERE b.name = '$building_name'
+                AND l.locker_status = 'Available';"
+              );
+              $countRow = mysqli_fetch_assoc($countResult);
 
-                    // Small
-                    $countResult = mysqli_query($conn,
-                      "SELECT COUNT(locker_status) as countS
-                      FROM `locker`
-                      WHERE locker_status='Available'
-                        AND `locker_location` = '" .$row7['name']. "'
-                        AND locker_size = 'Small'");
-                    $row1 = mysqli_fetch_array($countResult);
-                    $countS = $row1['countS'];
+              if ($countRow['available_count'] > 0):
+            ?>
+              <li tabindex="0" role="button" aria-expanded="false" onclick="$(this).attr('aria-expanded', $(this).attr('aria-expanded') == 'true' ? 'false' : 'true')" class="fix-outline">
+                <div class="collapsible-header">
+                  <ul>
+                    <li class="location"><b><?php echo $row7['name']; ?></b></li>
+                    <!-- Get count of Available Lockers by size -->
+                    <?php
+                      // X-Small
+                      $countResult = mysqli_query($conn,
+                        "SELECT COUNT(locker_status) as countXS
+                        FROM `locker`
+                        WHERE locker_status='Available'
+                          AND `locker_location` = '" .$row7['name']. "'
+                          AND locker_size = 'X-Small'");
+                      $row1 = mysqli_fetch_array($countResult);
+                      $countXS = $row1['countXS'];
 
-                    // Medium
-                    $countResult = mysqli_query($conn,
-                      "SELECT COUNT(locker_status) as countM
-                      FROM `locker`
-                      WHERE locker_status='Available'
-                        AND `locker_location` = '" .$row7['name']. "'
-                        AND locker_size = 'Medium'");
-                    $row1 = mysqli_fetch_array($countResult);
-                    $countM = $row1['countM'];
+                      // Small
+                      $countResult = mysqli_query($conn,
+                        "SELECT COUNT(locker_status) as countS
+                        FROM `locker`
+                        WHERE locker_status='Available'
+                          AND `locker_location` = '" .$row7['name']. "'
+                          AND locker_size = 'Small'");
+                      $row1 = mysqli_fetch_array($countResult);
+                      $countS = $row1['countS'];
 
-                    // Large
-                    $countResult = mysqli_query($conn,
-                      "SELECT COUNT(locker_status) as countL
-                      FROM `locker`
-                      WHERE locker_status='Available'
-                        AND `locker_location` = '" .$row7['name']. "'
-                        AND locker_size = 'Large'");
-                    $row1 = mysqli_fetch_array($countResult);
-                    $countL = $row1['countL'];
+                      // Medium
+                      $countResult = mysqli_query($conn,
+                        "SELECT COUNT(locker_status) as countM
+                        FROM `locker`
+                        WHERE locker_status='Available'
+                          AND `locker_location` = '" .$row7['name']. "'
+                          AND locker_size = 'Medium'");
+                      $row1 = mysqli_fetch_array($countResult);
+                      $countM = $row1['countM'];
 
-                    // Total
-                    $total = $countXS + $countS + $countM + $countL;
-                  ?>
-                  <li>
-                    <span style="color: #5da7a7;">Available: <?php echo $total ?></span>
-                    &nbsp  &nbsp
-                    XS: <?php echo $countXS ?> &nbsp; &nbsp;
-                    S: <?php echo $countS ?> &nbsp;  &nbsp;
-                    M: <?php echo $countM ?> &nbsp;  &nbsp;
-                    L: <?php echo $countL ?>
-                  </li>
-                <ul>
-              </div>
+                      // Large
+                      $countResult = mysqli_query($conn,
+                        "SELECT COUNT(locker_status) as countL
+                        FROM `locker`
+                        WHERE locker_status='Available'
+                          AND `locker_location` = '" .$row7['name']. "'
+                          AND locker_size = 'Large'");
+                      $row1 = mysqli_fetch_array($countResult);
+                      $countL = $row1['countL'];
 
-              <div class="collapsible-body row flex">
+                      // Total
+                      $total = $countXS + $countS + $countM + $countL;
+                    ?>
+                    <li>
+                      <span style="color: #5da7a7;">Available: <?php echo $total ?></span>
+                      &nbsp  &nbsp
+                      XS: <?php echo $countXS ?> &nbsp; &nbsp;
+                      S: <?php echo $countS ?> &nbsp;  &nbsp;
+                      M: <?php echo $countM ?> &nbsp;  &nbsp;
+                      L: <?php echo $countL ?>
+                    </li>
+                  <ul>
+                </div>
 
-              <!-- All sizes in building -->
-              <div class="col l5 m5 s6">
-                <select name="size" class="size">
-                  <option value="">Select Size</option>
-                  <?php
-                    $result8 = mysqli_query($conn,
-                      "SELECT DISTINCT locker_size
-                      FROM `locker`
-                      WHERE `locker_location` = '" .$row7['name']. "'
-                      ORDER BY locker_size DESC
-                      ");
-                    if($result8):
-                      while($row8 = mysqli_fetch_array($result8)):
-                  ?>
-                    <option value="<?php echo $row8['locker_size']; ?>"><?php echo $row8['locker_size']; ?></option>
-                    <?php endwhile ?>
-                  <?php endif ?>
-                </select>
-                <label>Size</label>
-              </div>
-              <!-- Available lockers by size selected -->
-              <!-- Dynamically fetched based on size, see footer.php -->
-              <div class="col l5 m5 s6">
-                <select name="locker" class="locker">
-                  <option value="">Select Locker</option>
-                </select>
-                <label>Available Lockers</label>
-              </div>
+                <div class="collapsible-body row flex">
 
-              <?php
-                if(isset($_SESSION['s_email']))
-                  echo("<a href='booking.php?id='");
-                else
-                  echo("<a href='/login.php?return-to=booking.php?id='");
-              ?> class="btn disabled skule-green z-depth-0 s2 m2 l2">Book</a>
+                <!-- All sizes in building -->
+                <div class="col l5 m5 s6">
+                  <select name="size" class="size">
+                    <option value="">Select Size</option>
+                    <?php
+                      $result8 = mysqli_query($conn,
+                        "SELECT DISTINCT locker_size
+                        FROM `locker`
+                        WHERE `locker_location` = '" .$row7['name']. "'
+                        ORDER BY locker_size DESC
+                        ");
+                      if($result8):
+                        while($row8 = mysqli_fetch_array($result8)):
+                    ?>
+                      <option value="<?php echo $row8['locker_size']; ?>"><?php echo $row8['locker_size']; ?></option>
+                      <?php endwhile ?>
+                    <?php endif ?>
+                  </select>
+                  <label>Size</label>
+                </div>
+                <!-- Available lockers by size selected -->
+                <!-- Dynamically fetched based on size, see footer.php -->
+                <div class="col l5 m5 s6">
+                  <select name="locker" class="locker">
+                    <option value="">Select Locker</option>
+                  </select>
+                  <label>Available Lockers</label>
+                </div>
 
-              </div>
-            </li>
+                <?php
+                  if(isset($_SESSION['s_email']))
+                    echo("<a href='booking.php?id='");
+                  else
+                    echo("<a href='/login.php?return-to=booking.php?id='");
+                ?> class="btn disabled skule-green z-depth-0 s2 m2 l2">Book</a>
+
+                </div>
+              </li>
+            <?php endif ?>
           <?php endwhile ?>
         <?php endif ?>
       </ul>
