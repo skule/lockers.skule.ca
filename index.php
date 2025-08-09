@@ -81,6 +81,11 @@ tr, td {
           <p>
             <b>Please Note:</b> Engineering buildings are currently only accessible between 8-6 Monday-Friday. Please take this into consideration when determining whether purchasing a locker is right for you.
           </p>
+          <p >
+            
+            For any questions or concerns, please contact the Commuter Student Director at
+            <a href="mailto:commuter@skule.ca"> commuter@skule.ca </a>
+          </p>
           <?php if(isset($_SESSION['s_email'])) echo("<!--"); ?>
           <p>To book a locker, <a href="register.php">register</a> or <a href="login.php">login</a>. 
           </p>
@@ -113,7 +118,7 @@ tr, td {
                     <td>$60</td>
                   </tr>
                     <td>Medium - Rosebrugh</td>
-                    <td>$45</td>
+                    <td>$25</td>
                   </tr>
                     <td>Small</td>
                     <td>$35</td>
