@@ -90,9 +90,10 @@
       <div class="row valign-wrapper">
         <!-- Archive toggle on the left -->
         <div class="col s12 m6 l6 left-align flow-text">
-          <label>
+          <label class="my-checkbox-container">
+            <span class="my-checkbox <?php echo $onlyAvailable ? 'checked' : ''; ?>"></span>
             <input type="checkbox" id="availableToggle" <?php echo $onlyAvailable ? 'checked' : ''; ?> onchange="toggleAvailable()">
-            <span><?php echo $onlyAvailable ? 'Show All Status' : 'Show Only Available'; ?></span>
+            <span>Show Only Available</span>
           </label>
         </div>
 
@@ -190,3 +191,27 @@
   mysqli_close($conn);
   include 'footer.php';
 ?>
+
+<style>
+  .my-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .my-checkbox {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+
+  .my-checkbox.checked {
+    background-color: #26a69a; /* teal accent */
+    border-color: #1e837a;    /* slightly darker teal border */
+  }
+</style>
