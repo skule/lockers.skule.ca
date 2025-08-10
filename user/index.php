@@ -18,7 +18,6 @@
                   $sql = "SELECT COUNT(record_sub) as sub
                     FROM `record`
                     WHERE record_sub='active'
-                      AND record_status='approved'
                       AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
                   $row = mysqli_fetch_array($result);
@@ -28,30 +27,6 @@
               </div>
               <div class="col s6 m6 icon green-text">
                 <i class="fas fa-check"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pending -->
-        <div class="col s12 m3">
-          <div class="card">
-            <div class="row">
-              <div class="col s6 m6 grey-text">
-                <?php
-                  $sql =
-                    "SELECT COUNT(record_status) as status
-                    FROM `record`
-                    WHERE record_status='pending'
-                      AND student_email='".$_SESSION['s_email']."'";
-                  $result = mysqli_query($conn, $sql);
-                  $row = mysqli_fetch_array($result);
-                  echo "<h5>".$row['status']."</h5>";
-                ?>
-                <h5>Pending</h5>
-              </div>
-              <div class="col s6 m6 icon blue-text">
-                <i class="fas fa-info-circle"></i>
               </div>
             </div>
           </div>
@@ -98,7 +73,6 @@
                   <th>End</th>
                   <th>Price</th>
                   <th>Locker id</th>
-                  <th>Status</th>
                   <th>Subscription</th>
                 </tr>
               </thead>
@@ -115,7 +89,6 @@
                   <td><?php echo $row['record_end']; ?></td>
                   <td><?php echo "$"."".$row['record_price']; ?></td>
                   <td><?php echo $row['locker_id']; ?></td>
-                  <td><?php echo $row['record_status']; ?></td>
                   <td><?php echo $row['record_sub']; ?></td>
                 </tr>
               <?php endwhile ?>
