@@ -30,12 +30,12 @@
         // Hashing the password
         $hashedPwd = password_hash($_POST['password'], PASSWORD_DEFAULT);
         // Update database
-        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username',
-          admin_email='$email', admin_password='$hashedPwd' WHERE admin_id='$username'";
+        $sql = "UPDATE `admin` SET admin_username='$username',
+          admin_email='$email', admin_password='$hashedPwd' WHERE admin_username='$username'";
       } else {
         // Update database
-        $sql = "UPDATE `admin` SET admin_id='$username', admin_username='$username',
-          admin_email='$email' WHERE admin_id='$username'";
+        $sql = "UPDATE `admin` SET admin_username='$username',
+          admin_email='$email' WHERE admin_userame='$username'";
       }
 
       if (mysqli_query($conn, $sql)){

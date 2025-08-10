@@ -26,7 +26,7 @@
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     if (strlen($email) > 320 || filter_var($email, FILTER_VALIDATE_EMAIL) === false || !is_email_utoronto($email)){
-      $msg = "Please use a valid email";
+      $msg ="Please use a valid email" . $name;
       $msgClass = "red";
     } else {
       if(!empty($password)) {
@@ -80,7 +80,7 @@
         <div class="row">
           <div class="input-field">
             <i class="material-icons prefix">email</i>
-            <input disabled="disabled" type="email" id="email" name="email" value="<?php echo $row['student_email']; ?>">
+            <input  type="email" id="email" name="email" value="<?php echo $row['student_email']; ?>">
             <label for="email">Email</label>
           </div>
         </div>

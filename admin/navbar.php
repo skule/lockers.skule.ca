@@ -9,6 +9,10 @@
   <script src="../js/fontawesome-all.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <script>
+  //Echo Self-XSS warning
+    console.log("%cSTOP!\n%cDon't listen to anyone who tells you to paste anything in here.\nThey're trying to hack you and probably trying to gain access to your PayPal account.\n%cMore info: https://lockers.skule.ca/self-xss.php", "color: red; font-size: 50pt; text-shadow: 0 0 3px black;", "color: red; font-size: 20pt;", "color: red; font-size: 13pt;");
+  </script>
 </head>
 <body>
   <a class="content-link" href="#screen-reader-content">Skip navigation</a>

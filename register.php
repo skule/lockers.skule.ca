@@ -158,6 +158,7 @@ body {
                       if(isset($_GET['return-to']))
                         echo("?return-to=".$_GET['return-to']);
                       ?>">Login</a><br><br>
+                      <!-- PAYPAL INTEGRATION HERE -->
                     <button type="submit" class="waves-effect waves-light btn blue" name="submit">
                       Register
                     </button>
