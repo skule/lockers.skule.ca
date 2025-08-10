@@ -2,6 +2,7 @@
   require 'session.php';
   include 'navbar.php';
   require '../model/db.php';
+  require_once '../booking_dates.php';
 ?>
 
 <div class="wrapper">
@@ -15,18 +16,42 @@
             <div class="row">
               <div class="col s6 m6 grey-text">
                 <?php
-                  $sql = "SELECT COUNT(record_sub) as sub
-                    FROM `record`
-                    WHERE record_sub='active'
-                      AND student_email='".$_SESSION['s_email']."'";
+                  $sql = "SELECT COUNT(*) AS ongoing
+                    FROM `record` r
+                    WHERE record_start <= '$dateString' 
+                    AND '$dateString' <= record_end
+                    AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
-                  $row = mysqli_fetch_array($result);
-                  echo "<h5>".$row['sub']."</h5>";
+                  $row = mysqli_fetch_assoc($result);
+                  echo "<h5>".$row['ongoing']."</h5>";
                 ?>
                 <h5>Active</h5>
               </div>
               <div class="col s6 m6 icon green-text">
                 <i class="fas fa-check"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming -->
+        <div class="col s12 m3">
+          <div class="card"> 
+            <div class="row">
+              <div class="col s6 m6 grey-text">
+                <?php
+                  $sql = "SELECT COUNT(*) AS upcoming
+                    FROM `record` r
+                    WHERE record_start > '$dateString' 
+                    AND student_email='".$_SESSION['s_email']."'";
+                  $result = mysqli_query($conn, $sql);
+                  $row = mysqli_fetch_assoc($result);
+                  echo "<h5>".$row['upcoming']."</h5>";
+                ?>
+                <h5>Upcoming</h5>
+              </div>
+              <div class="col s6 m6 icon blue-text">
+                <i class="fa fa-solid fa-calendar"></i>
               </div>
             </div>
           </div>
@@ -38,13 +63,13 @@
             <div class="row">
               <div class="col s6 m6 grey-text">
                 <?php
-                  $sql = "SELECT COUNT(record_sub) as sub
-                    FROM `record`
-                    WHERE record_sub='expired'
-                      AND student_email='".$_SESSION['s_email']."'";
+                  $sql = "SELECT COUNT(*) AS expired
+                    FROM `record` r
+                    WHERE record_end < '$dateString' 
+                    AND student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
-                  $row = mysqli_fetch_array($result);
-                  echo "<h5>".$row['sub']."</h5>";
+                  $row = mysqli_fetch_assoc($result);
+                  echo "<h5>".$row['expired']."</h5>";
                 ?>
                 <h5>Expired</h5>
               </div>
@@ -73,7 +98,7 @@
                   <th>End</th>
                   <th>Price</th>
                   <th>Locker id</th>
-                  <th>Subscription</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,17 +106,26 @@
                   $i = 1;
                   $sql = "SELECT * FROM `record` WHERE student_email='".$_SESSION['s_email']."'";
                   $result = mysqli_query($conn, $sql);
-                  while ($row = mysqli_fetch_array($result)):
+                  while ($row = mysqli_fetch_assoc($result)):
+                    // Determine status
+                    if ($row['record_end'] < $dateString) {
+                        $status = "Expired";
+                    } elseif ($row['record_start'] > $dateString) {
+                        $status = "Upcoming";
+                    } else {
+                        // record_start <= dateString <= record_end
+                        $status = "Active";
+                    }
                 ?>
-                <tr>
-                  <td><?php echo $i; $i++; ?></td>
-                  <td><?php echo $row['record_start']; ?></td>
-                  <td><?php echo $row['record_end']; ?></td>
-                  <td><?php echo "$"."".$row['record_price']; ?></td>
-                  <td><?php echo $row['locker_id']; ?></td>
-                  <td><?php echo $row['record_sub']; ?></td>
-                </tr>
-              <?php endwhile ?>
+                  <tr>
+                    <td><?php echo $i; $i++; ?></td>
+                    <td><?php echo $row['record_start']; ?></td>
+                    <td><?php echo $row['record_end']; ?></td>
+                    <td><?php echo "$"."".$row['record_price']; ?></td>
+                    <td><?php echo $row['locker_id']; ?></td>
+                    <td><?php echo $status; ?></td>
+                  </tr>
+                <?php endwhile ?>
               </tbody>
             </table>
           </div>
