@@ -3,25 +3,7 @@
   session_start();
   include 'navbar.php';
   require_once 'model/db.php';
-
-  //Booking start and end dates, yyyy-mm-dd
-  // Determine current date
-  $today = new DateTime();
-
-  // Determine academic year start and end
-  $year = (int)$today->format("Y");
-  $month = (int)$today->format("m");
-
-  // The booking period is always from Sept 1 to May 31
-  // You can book for the following academic year starting from June 1
-  // i.e. after the previous booking period ends
-  if ($month >= 6) {
-    $BOOKING_START_DATE = "$year-09-01";
-    $BOOKING_END_DATE = ($year + 1) . "-05-31";
-  } else {
-    $BOOKING_START_DATE = ($year - 1) . "-09-01";
-    $BOOKING_END_DATE = "$year-05-31";
-  }
+  require_once 'booking_dates.php';
 
   // Override form inputs
   $_POST['start'] = $BOOKING_START_DATE;
@@ -94,8 +76,8 @@
         } else {
           date_default_timezone_set('America/Toronto') ;
           $time = date('Y-m-d H:i:s'); 
-          $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id, record_order_id, record_capture_id, record_sub, book_date)
-          VALUES ('$start', '$end', '$price', '$semail', '$lid', '$order_id', '$capture_id', 'active', '$time');";
+          $sql = "INSERT INTO `record` (record_start, record_end, record_price, student_email, locker_id, record_order_id, record_capture_id, book_date)
+          VALUES ('$start', '$end', '$price', '$semail', '$lid', '$order_id', '$capture_id', '$time');";
           $sql .= "UPDATE `locker` SET locker_status='Booked' WHERE locker_id='$lid'";
 
           $result = mysqli_multi_query($conn, $sql) or die(mysqli_error($conn)."<br/>\n$sql");
@@ -103,7 +85,7 @@
           $msgClass = "green";
         }
       }
-  }
+    }
   }
   mysqli_close($conn);
 ?>
