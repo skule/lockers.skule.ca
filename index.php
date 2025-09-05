@@ -121,7 +121,7 @@ tr, td {
                     <td>$25</td>
                   </tr>
                     <td>Small</td>
-                    <td>$35</td>
+                    <td>$30</td>
                   </tr>
                     <td>X-Small</td>
                     <td>$30</td>
