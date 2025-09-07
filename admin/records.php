@@ -215,7 +215,7 @@ $(function(){
                     left join `locker` l on r.locker_id = l.locker_id 
                     left join `record_meta` m on r.record_id = m.record_id";
             $where = [];
-            if (!$displayArchived) $where[] = "is_archived = 0";
+            if (!$displayArchived) $where[] = "COALESCE(is_archived, 0) = 0";
             if ($onlySpecial) $where[] = "(is_refunded = 1 OR (comment IS NOT NULL AND comment != ''))";
             if (count($where) > 0) {
               $sql .= " WHERE " . implode(" AND ", $where);
