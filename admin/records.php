@@ -8,6 +8,38 @@
   $msg = $msgClass = '';
   $displayArchived = isset($_GET['displayArchived']) && $_GET['displayArchived'] == '1';
   $onlySpecial = isset($_GET['onlySpecial']) && $_GET['onlySpecial'] == '1';
+  $sortId = $_GET['sortId'] ?? '';
+  $sortPrice = $_GET['sortPrice'] ?? '';
+
+  $toggles = [
+    [
+      'id' => 'archivedToggle',
+      'param' => 'displayArchived',
+      'checked' => $displayArchived,
+      'label' => 'Show Archived'
+    ],
+    [
+      'id' => 'onlySpecialToggle',
+      'param' => 'onlySpecial',
+      'checked' => $onlySpecial,
+      'label' => 'Show Only Refunded / Comments'
+    ]
+  ];
+
+  $sortToggles = [
+    [
+      'id' => 'sortIdToggle',
+      'param' => 'sortId',
+      'state' => $sortId, // '', 'asc', or 'desc'
+      'label' => 'Sort by Locker ID'
+    ],
+    [
+      'id' => 'sortPriceToggle',
+      'param' => 'sortPrice',
+      'state' => $sortPrice,
+      'label' => 'Sort by Price'
+    ]
+  ];
 
   // Handle form submission for refunding or archiving records
   if (
@@ -61,28 +93,37 @@
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  function toggleArchived() {
-    const checked = document.getElementById('archivedToggle').checked;
+  function cycleSort(param) {
     const url = new URL(window.location.href);
-    
-    if (checked) {
-      url.searchParams.set('displayArchived', '1');
+    let current = url.searchParams.get(param);
+
+    // Cycle: '' -> 'asc' -> 'desc' -> ''
+    if (!current) {
+      url.searchParams.set(param, 'asc');
+    } else if (current === 'asc') {
+      url.searchParams.set(param, 'desc');
     } else {
-      url.searchParams.delete('displayArchived');
+      url.searchParams.delete(param);
     }
-    
+
+    // Remove other sort params to allow only one active sort at a time 
+    // other sorts don't do anything if already sorting by locker id 
+    if (param === 'sortId') url.searchParams.delete('sortPrice');
+    if (param === 'sortPrice') url.searchParams.delete('sortId');
+
     window.location.href = url.toString();
   }
-  function toggleOnlySpecial() {
-    const checked = document.getElementById('onlySpecialToggle').checked;
+
+  function handleToggle(type, param) {
+    const checked = document.getElementById(type).checked;
     const url = new URL(window.location.href);
-    
+
     if (checked) {
-      url.searchParams.set('onlySpecial', '1');
+      url.searchParams.set(param, '1');
     } else {
-      url.searchParams.delete('onlySpecial');
+      url.searchParams.delete(param);
     }
-    
+
     window.location.href = url.toString();
   }
 $(function(){
@@ -164,23 +205,37 @@ $(function(){
       <br>
       <!-- Filters -->
       <div class="row valign-wrapper">
-        <!-- Archive toggle on the left -->
-        <div class="col s12 m6 l6 left-align flow-text">
-          <label class="my-checkbox-container">
-            <span class="my-checkbox <?php echo $displayArchived ? 'checked' : ''; ?>"></span>
-            <input type="checkbox" id="archivedToggle" <?php echo $displayArchived ? 'checked' : ''; ?> onchange="toggleArchived()">
-            <span>Show Archived</span>
-          </label>
-        </div>
+        <?php foreach ($toggles as $toggle): ?>
+          <div class="col s12 m6 l6 left-align flow-text">
+            <label class="my-checkbox-container">
+              <span class="my-checkbox <?php echo $toggle['checked'] ? 'checked' : ''; ?>"></span>
+              <input
+                type="checkbox"
+                id="<?php echo $toggle['id']; ?>"
+                <?php echo $toggle['checked'] ? 'checked' : ''; ?>
+                onchange="handleToggle('<?php echo $toggle['id']; ?>', '<?php echo $toggle['param']; ?>')"
+              >
+              <span><?php echo $toggle['label']; ?></span>
+            </label>
+          </div>
+        <?php endforeach; ?>
 
-        <!-- Refunded toggle on the left -->
-        <div class="col s12 m6 l6 left-align flow-text">
-          <label class="my-checkbox-container">
-            <span class="my-checkbox <?php echo $onlySpecial ? 'checked' : ''; ?>"></span>
-            <input type="checkbox" id="onlySpecialToggle" <?php echo $onlySpecial ? 'checked' : ''; ?> onchange="toggleOnlySpecial()">
-            <span>Show Only Refunded / Comments</span>
-          </label>
-        </div>
+        <?php foreach ($sortToggles as $toggle): ?>
+          <div class="col s12 m6 l6 left-align flow-text">
+            <button
+              type="button"
+              class="btn-flat"
+              onclick="cycleSort('<?php echo $toggle['param']; ?>')"
+              title="Cycle sort"
+            >
+              <?php echo $toggle['label']; ?>
+              <?php
+                if ($toggle['state'] === 'asc') echo ' ↑';
+                elseif ($toggle['state'] === 'desc') echo ' ↓';
+              ?>
+            </button>
+          </div>
+        <?php endforeach; ?>
 
         <!-- Search field on the right -->
         <div class="col s12 m6 l6 right-align">
@@ -208,9 +263,9 @@ $(function(){
         </thead>
         <tbody>
           <?php
-			      $sql = "SELECT r.locker_id, student_email, book_date, record_start, record_end, 
-                           record_capture_id, r.record_id, locker_price, 
-                           comment, is_refunded, is_archived 
+            $sql = "SELECT r.locker_id, student_email, book_date, record_start, record_end, 
+                          record_capture_id, r.record_id, locker_price, 
+                          comment, is_refunded, is_archived 
                     FROM `record` r 
                     left join `locker` l on r.locker_id = l.locker_id 
                     left join `record_meta` m on r.record_id = m.record_id";
@@ -220,7 +275,19 @@ $(function(){
             if (count($where) > 0) {
               $sql .= " WHERE " . implode(" AND ", $where);
             }
-            $sql .= " ORDER BY book_date DESC";
+
+            // Sorting logic with 3 states
+            if ($sortId === 'asc') {
+              $sql .= " ORDER BY l.locker_id ASC";
+            } elseif ($sortId === 'desc') {
+              $sql .= " ORDER BY l.locker_id DESC";
+            } elseif ($sortPrice === 'asc') {
+              $sql .= " ORDER BY locker_price ASC";
+            } elseif ($sortPrice === 'desc') {
+              $sql .= " ORDER BY locker_price DESC";
+            } else {
+              $sql .= " ORDER BY book_date DESC";
+            }
             $result = mysqli_query($conn, $sql);
 
             while ($row = mysqli_fetch_array($result)):
