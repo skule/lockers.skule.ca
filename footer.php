@@ -2,7 +2,7 @@
     <div class="container ">
       <div class="row valign-wrapper">
         <div class="col s6">
-          <img src="img/skule_crest.png" class="footer-img" alt="University of Toronto Engineering Society"></img>
+          <img src="/img/skule_crest.png" class="footer-img" alt="University of Toronto Engineering Society"></img>
         </div>
         <div class="col s12">
           <p class="grey-text text-lighten-4">

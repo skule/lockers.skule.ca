@@ -45,7 +45,7 @@
 ?>
 
 <style>
-// Finally sticky footer! Good god have mercy
+/* Finally sticky footer! Good god have mercy */
 body {
   display: flex;
   min-height: 100vh;
@@ -54,9 +54,7 @@ body {
 
 .site-content {
   flex: 1 0 auto;
-
 }
-</style>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +68,6 @@ body {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
 <body>
   <!-- Admin Login Nav -->
   <nav role="navigation" class="z-depth-0">
@@ -121,22 +118,6 @@ body {
     </div>
   </div>
 
-
-<footer class="page-footer">
-  <div class="container ">
-    <div class="row valign-wrapper">
-      <div class="col s6">
-        <img src="../img/skule_crest.png" class="footer-img"></img>
-      </div>
-      <div class="col s12">
-        <p class="grey-text text-lighten-4">
-          A service of the University of Toronto Engineering Society. For any
-          questions or concerns, please contact the President at president@skule.ca.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="footer-copyright">
-    <!-- TODO: Add copyright -->
-  </div>
-</footer>
+<?php
+  include '../footer.php';
+?>
